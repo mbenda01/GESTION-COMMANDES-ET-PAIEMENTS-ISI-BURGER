@@ -1,0 +1,43 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+body {
+    background-color: #FFFFFF;
+    color: #1A1A1A;
+    font-family: 'Segoe UI', sans-serif;
+}
+.btn-amber {
+    background-color: #D4530A;
+    color: #FFFFFF;
+    border: none;
+}
+.btn-amber:hover {
+    background-color: #b8460a;
+    color: #FFFFFF;
+}
+.btn-outline-dark-custom {
+    background-color: transparent;
+    border: 1px solid #1A1A1A;
+    color: #1A1A1A;
+}
+.btn-outline-dark-custom:hover {
+    background-color: #1A1A1A;
+    color: #FFFFFF;
+}
+.price-amber { color: #D4530A; font-weight: bold; }
+.text-muted-custom { color: #666666; }
+.card {
+    border: 1px solid #E0E0E0;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.stats-highlight {
+    background-color: #D4530A;
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 1rem;
+}
+.badge-en_attente     { background-color: #E65100 !important; color: #fff !important; }
+.badge-en_preparation { background-color: #F57C00 !important; color: #fff !important; }
+.badge-prete          { background-color: #2E7D32 !important; color: #fff !important; }
+.badge-payee          { background-color: #2E7D32 !important; color: #fff !important; }
+.badge-annulee        { background-color: #C0392B !important; color: #fff !important; }

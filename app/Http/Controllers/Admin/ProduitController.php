@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProduitRequest;
 use App\Http\Requests\UpdateProduitRequest;
 use App\Models\Produit;
+use Illuminate\Http\Request;
 
 class ProduitController extends Controller
 {
     public function index()
     {
-        $produits = Produit::orderBy('created_at', 'desc')->paginate(5);
+        $produits = Produit::orderBy('created_at', 'desc')->paginate(6);
         return view('admin.produits.index', compact('produits'));
     }
 
@@ -22,10 +23,18 @@ class ProduitController extends Controller
 
     public function store(StoreProduitRequest $request)
     {
-        Produit::create($request->validated());
+        $data = $request->validated();
+        $data['bloque'] = isset($data['stock']) && $data['stock'] <= 0;
+
+        Produit::create($data);
 
         return redirect()->route('admin.produits.index')
             ->with('success', 'Burger ajouté avec succès.');
+    }
+
+    public function show(Produit $produit)
+    {
+        return view('admin.produits.show', compact('produit'));
     }
 
     public function edit(Produit $produit)
@@ -35,7 +44,10 @@ class ProduitController extends Controller
 
     public function update(UpdateProduitRequest $request, Produit $produit)
     {
-        $produit->update($request->validated());
+        $data = $request->validated();
+        $data['bloque'] = isset($data['stock']) && $data['stock'] <= 0;
+
+        $produit->update($data);
 
         return redirect()->route('admin.produits.index')
             ->with('success', 'Burger mis à jour avec succès.');
@@ -49,11 +61,6 @@ class ProduitController extends Controller
             ->with('success', 'Burger supprimé avec succès.');
     }
 
-    public function show(Produit $produit)
-    {
-        return view('admin.produits.show', compact('produit'));
-    }
-
     public function toggleArchive(Produit $produit)
     {
         $produit->update(['archive' => !$produit->archive]);
@@ -62,5 +69,41 @@ class ProduitController extends Controller
 
         return redirect()->route('admin.produits.index')
             ->with('success', $message);
+    }
+
+    public function updateStock(Request $request, Produit $produit)
+    {
+        $request->validate([
+            'action'   => ['required', 'in:ajouter,diminuer,definir'],
+            'quantite' => ['required', 'integer', 'min:0'],
+        ]);
+
+        $quantite = (int) $request->quantite;
+
+        switch ($request->action) {
+            case 'ajouter':
+                $nouveauStock = $produit->stock + $quantite;
+                break;
+            case 'diminuer':
+                $nouveauStock = max(0, $produit->stock - $quantite);
+                break;
+            case 'definir':
+                $nouveauStock = $quantite;
+                break;
+            default:
+                $nouveauStock = $produit->stock;
+        }
+
+        $produit->update([
+            'stock'  => $nouveauStock,
+            'bloque' => $nouveauStock <= 0,
+        ]);
+
+        $msg = $nouveauStock <= 0
+            ? 'Stock mis à jour — produit bloqué (rupture).'
+            : 'Stock mis à jour avec succès.';
+
+        return redirect()->route('admin.produits.index')
+            ->with('success', $msg);
     }
 }

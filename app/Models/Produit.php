@@ -16,12 +16,23 @@ class Produit extends Model
         'image',
         'stock',
         'archive',
+        'bloque',
     ];
 
     protected $casts = [
         'archive' => 'boolean',
+        'bloque'  => 'boolean',
         'prix'    => 'decimal:2',
     ];
+
+    protected static function booted(): void
+    {
+        static::saving(function (Produit $produit) {
+            if ($produit->stock <= 0) {
+                $produit->bloque = true;
+            }
+        });
+    }
 
     public function commandes()
     {
@@ -32,6 +43,28 @@ class Produit extends Model
 
     public function scopeDisponible($query)
     {
-        return $query->where('archive', false)->where('stock', '>', 0);
+        return $query->where('archive', false)
+                     ->where('bloque', false)
+                     ->where('stock', '>', 0);
+    }
+
+    public function scopeActif($query)
+    {
+        return $query->where('archive', false);
+    }
+
+    public function estDisponible(): bool
+    {
+        return !$this->archive && !$this->bloque && $this->stock > 0;
+    }
+
+    public function estEnRupture(): bool
+    {
+        return $this->stock <= 0;
+    }
+
+    public function estStockFaible(): bool
+    {
+        return $this->stock > 0 && $this->stock <= 5;
     }
 }

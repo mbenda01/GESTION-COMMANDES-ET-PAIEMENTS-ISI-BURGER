@@ -20,14 +20,17 @@ class CommandeConfirmeeNotification extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
+        $nomClient = $this->commande->nom_complet_client;
+
         return (new MailMessage)
-            ->subject('✅ Confirmation de votre commande #' . $this->commande->id)
-            ->greeting('Bonjour ' . $notifiable->name . ' !')
+            ->subject('✅ Confirmation de votre commande #' . str_pad($this->commande->id, 5, '0', STR_PAD_LEFT))
+            ->greeting('Bonjour ' . $nomClient . ' !')
             ->line('Votre commande a bien été reçue et est en cours de traitement.')
-            ->line('**Numéro de commande :** #' . $this->commande->id)
+            ->line('**Numéro de commande :** #' . str_pad($this->commande->id, 5, '0', STR_PAD_LEFT))
             ->line('**Montant total :** ' . number_format($this->commande->montant_total, 0, ',', ' ') . ' FCFA')
-            ->line('**Statut :** En attente')
-            ->action('Voir ma commande', url('/mes-commandes/' . $this->commande->id))
-            ->line('Merci de votre confiance chez ISI BURGER !');
+            ->line('**Adresse de livraison :** ' . $this->commande->adresse_livraison)
+            ->line('**Statut :** En attente de préparation')
+            ->line('Nous vous enverrons un email dès que votre commande sera prête.')
+            ->salutation('Merci de votre confiance — ISI BURGER 🍔');
     }
 }

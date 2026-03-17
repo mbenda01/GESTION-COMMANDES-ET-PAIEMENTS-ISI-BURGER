@@ -1,132 +1,783 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISI BURGER — Le meilleur burger de Dakar</title>
 
-        <title>Laravel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
-        <!-- Fonts -->
-        <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue-900: #0a2a6e;
+            --blue-800: #0d3a9e;
+            --blue:     #0d6efd;
+            --blue-light: #e8f0fe;
+            --yellow:   #ffc107;
+            --yellow-dark: #e6a800;
+            --gold:     #f59e0b;
+            --gray-50:  #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --success:  #16a34a;
+            --danger:   #dc2626;
+        }
 
-        <!-- Styles -->
-        <style>
-            /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}a{background-color:transparent}[hidden]{display:none}html{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;line-height:1.5}*,:after,:before{box-sizing:border-box;border:0 solid #e2e8f0}a{color:inherit;text-decoration:inherit}svg,video{display:block;vertical-align:middle}video{max-width:100%;height:auto}.bg-white{--tw-bg-opacity: 1;background-color:rgb(255 255 255 / var(--tw-bg-opacity))}.bg-gray-100{--tw-bg-opacity: 1;background-color:rgb(243 244 246 / var(--tw-bg-opacity))}.border-gray-200{--tw-border-opacity: 1;border-color:rgb(229 231 235 / var(--tw-border-opacity))}.border-t{border-top-width:1px}.flex{display:flex}.grid{display:grid}.hidden{display:none}.items-center{align-items:center}.justify-center{justify-content:center}.font-semibold{font-weight:600}.h-5{height:1.25rem}.h-8{height:2rem}.h-16{height:4rem}.text-sm{font-size:.875rem}.text-lg{font-size:1.125rem}.leading-7{line-height:1.75rem}.mx-auto{margin-left:auto;margin-right:auto}.ml-1{margin-left:.25rem}.mt-2{margin-top:.5rem}.mr-2{margin-right:.5rem}.ml-2{margin-left:.5rem}.mt-4{margin-top:1rem}.ml-4{margin-left:1rem}.mt-8{margin-top:2rem}.ml-12{margin-left:3rem}.-mt-px{margin-top:-1px}.max-w-6xl{max-width:72rem}.min-h-screen{min-height:100vh}.overflow-hidden{overflow:hidden}.p-6{padding:1.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.pt-8{padding-top:2rem}.fixed{position:fixed}.relative{position:relative}.top-0{top:0}.right-0{right:0}.shadow{--tw-shadow: 0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1);--tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000),var(--tw-ring-shadow, 0 0 #0000),var(--tw-shadow)}.text-center{text-align:center}.text-gray-200{--tw-text-opacity: 1;color:rgb(229 231 235 / var(--tw-text-opacity))}.text-gray-300{--tw-text-opacity: 1;color:rgb(209 213 219 / var(--tw-text-opacity))}.text-gray-400{--tw-text-opacity: 1;color:rgb(156 163 175 / var(--tw-text-opacity))}.text-gray-500{--tw-text-opacity: 1;color:rgb(107 114 128 / var(--tw-text-opacity))}.text-gray-600{--tw-text-opacity: 1;color:rgb(75 85 99 / var(--tw-text-opacity))}.text-gray-700{--tw-text-opacity: 1;color:rgb(55 65 81 / var(--tw-text-opacity))}.text-gray-900{--tw-text-opacity: 1;color:rgb(17 24 39 / var(--tw-text-opacity))}.underline{text-decoration:underline}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.w-5{width:1.25rem}.w-8{width:2rem}.w-auto{width:auto}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.sm\:rounded-lg{border-radius:.5rem}.sm\:block{display:block}.sm\:items-center{align-items:center}.sm\:justify-start{justify-content:flex-start}.sm\:justify-between{justify-content:space-between}.sm\:h-20{height:5rem}.sm\:ml-0{margin-left:0}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:pt-0{padding-top:0}.sm\:text-left{text-align:left}.sm\:text-right{text-align:right}}@media (min-width:768px){.md\:border-t-0{border-top-width:0}.md\:border-l{border-left-width:1px}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (min-width:1024px){.lg\:px-8{padding-left:2rem;padding-right:2rem}}@media (prefers-color-scheme:dark){.dark\:bg-gray-800{--tw-bg-opacity: 1;background-color:rgb(31 41 55 / var(--tw-bg-opacity))}.dark\:bg-gray-900{--tw-bg-opacity: 1;background-color:rgb(17 24 39 / var(--tw-bg-opacity))}.dark\:border-gray-700{--tw-border-opacity: 1;border-color:rgb(55 65 81 / var(--tw-border-opacity))}.dark\:text-white{--tw-text-opacity: 1;color:rgb(255 255 255 / var(--tw-text-opacity))}.dark\:text-gray-400{--tw-text-opacity: 1;color:rgb(156 163 175 / var(--tw-text-opacity))}.dark\:text-gray-500{--tw-text-opacity: 1;color:rgb(107 114 128 / var(--tw-text-opacity))}}
-        </style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        <style>
-            body {
-                font-family: 'Nunito', sans-serif;
-            }
-        </style>
-    </head>
-    <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-            @if (Route::has('login'))
-                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+        }
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                        @endif
-                    @endauth
+        html { scroll-behavior: smooth; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-10px); }
+        }
+
+        /* ── NAVBAR ── */
+        .navbar-welcome {
+            background: linear-gradient(90deg, var(--blue-900) 0%, #0f1e4a 100%);
+            border-bottom: 3px solid var(--yellow);
+            padding: 0.75rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--yellow), var(--gold));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--blue-900);
+            box-shadow: 0 4px 12px rgba(255,193,7,0.4);
+            flex-shrink: 0;
+        }
+
+        .nav-link-w {
+            color: rgba(255,255,255,0.75) !important;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 8px 14px !important;
+            border-radius: 8px;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-link-w:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--yellow) !important;
+        }
+
+        .btn-nav-login {
+            background: linear-gradient(135deg, var(--yellow), var(--gold));
+            color: var(--blue-900) !important;
+            font-weight: 800 !important;
+            border-radius: 10px !important;
+            padding: 8px 18px !important;
+            font-size: 0.88rem !important;
+            box-shadow: 0 4px 12px rgba(255,193,7,0.35);
+            transition: all 0.25s !important;
+        }
+
+        .btn-nav-login:hover {
+            background: linear-gradient(135deg, var(--yellow-dark), #d97706) !important;
+            transform: translateY(-1px);
+            color: var(--blue-900) !important;
+        }
+
+        /* ── HERO ── */
+        .hero-section {
+            background: linear-gradient(160deg, var(--blue-900) 0%, #0f1e4a 55%, var(--blue-800) 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 80px 0;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: rgba(255,193,7,0.05);
+            top: -200px;
+            right: -150px;
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--yellow), var(--gold));
+            color: var(--blue-900);
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 6px 16px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.5s ease both;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        .hero-title span { color: var(--yellow); }
+
+        .hero-sub {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.7;
+            margin-bottom: 32px;
+            max-width: 480px;
+            animation: fadeInUp 0.7s ease both;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .btn-hero-primary {
+            background: linear-gradient(135deg, var(--yellow), var(--gold));
+            color: var(--blue-900);
+            font-weight: 800;
+            font-size: 1rem;
+            padding: 14px 28px;
+            border-radius: 14px;
+            border: none;
+            box-shadow: 0 6px 20px rgba(255,193,7,0.4);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(255,193,7,0.5);
+            background: linear-gradient(135deg, var(--yellow-dark), #d97706);
+            color: var(--blue-900);
+        }
+
+        .btn-hero-outline {
+            background: transparent;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 14px 28px;
+            border-radius: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-hero-outline:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.6);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .hero-emoji {
+            font-size: 9rem;
+            animation: float 3s ease-in-out infinite;
+            display: block;
+            text-align: center;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 32px;
+            animation: fadeInUp 0.9s ease both;
+        }
+
+        .hero-stat-item {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(8px);
+            transition: all 0.25s;
+        }
+
+        .hero-stat-item:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,193,7,0.2);
+        }
+
+        .hsi-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .hsi-yellow { background: rgba(255,193,7,0.2); color: var(--yellow); }
+        .hsi-green  { background: rgba(22,163,74,0.2); color: #4ade80; }
+        .hsi-blue   { background: rgba(13,110,253,0.2); color: #60a5fa; }
+        .hsi-red    { background: rgba(220,38,38,0.2); color: #f87171; }
+
+        .hsi-num {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: white;
+            display: block;
+            line-height: 1;
+        }
+
+        .hsi-lbl {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.5);
+            font-weight: 500;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ── FEATURES ── */
+        .features-section {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--blue-light);
+            color: var(--blue);
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 5px 14px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        .section-title-main {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .section-sub {
+            font-size: 0.95rem;
+            color: var(--gray-400);
+            line-height: 1.7;
+            max-width: 500px;
+        }
+
+        .feature-card {
+            background: var(--gray-50);
+            border-radius: 18px;
+            padding: 28px;
+            border: 1.5px solid var(--gray-100);
+            transition: all 0.3s ease;
+            height: 100%;
+            animation: fadeInUp 0.5s ease both;
+        }
+
+        .feature-card:hover {
+            border-color: var(--yellow);
+            box-shadow: 0 8px 28px rgba(10,42,110,0.1);
+            transform: translateY(-4px);
+            background: white;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 18px;
+        }
+
+        .fi-yellow { background: linear-gradient(135deg, var(--yellow), var(--gold)); color: var(--blue-900); }
+        .fi-blue   { background: linear-gradient(135deg, var(--blue-900), var(--blue-800)); color: white; }
+        .fi-green  { background: linear-gradient(135deg, #16a34a, #166534); color: white; }
+        .fi-orange { background: linear-gradient(135deg, #e65100, #f57c00); color: white; }
+
+        .feature-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            font-size: 0.875rem;
+            color: var(--gray-400);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* ── CTA ── */
+        .cta-section {
+            background: linear-gradient(135deg, var(--blue-900) 0%, #0f1e4a 100%);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        .cta-content { position: relative; z-index: 2; text-align: center; }
+
+        .cta-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.5px;
+            margin-bottom: 14px;
+        }
+
+        .cta-title span { color: var(--yellow); }
+
+        .cta-sub {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 32px;
+            line-height: 1.7;
+        }
+
+        /* ── FOOTER ── */
+        .footer-welcome {
+            background: linear-gradient(160deg, var(--blue-900) 0%, #0f1e4a 100%);
+            border-top: 3px solid var(--yellow);
+            color: white;
+            padding: 48px 0 24px;
+        }
+
+        .footer-brand-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--yellow), var(--gold));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: var(--blue-900);
+            margin-bottom: 14px;
+        }
+
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 8px; }
+        .footer-links a {
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .footer-links a:hover { color: var(--yellow); transform: translateX(4px); }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255,255,255,0.55);
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .footer-contact-item i { color: var(--yellow); }
+
+        .social-links { display: flex; gap: 10px; margin-top: 14px; }
+        .social-link {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.65);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.25s;
+            font-size: 1rem;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .social-link:hover {
+            background: var(--yellow);
+            color: var(--blue-900);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2rem; }
+            .hero-stats { grid-template-columns: 1fr 1fr; }
+            .hero-emoji { font-size: 6rem; }
+        }
+    </style>
+</head>
+<body>
+
+{{-- ── NAVBAR ── --}}
+<nav class="navbar-welcome">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="{{ route('catalogue.index') }}"
+               class="d-flex align-items-center gap-2 text-decoration-none">
+                <div class="brand-icon">
+                    <i class="bi bi-egg-fried"></i>
                 </div>
-            @endif
-
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                    <svg viewBox="0 0 651 192" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 w-auto text-gray-700 sm:h-20">
-                        <g clip-path="url(#clip0)" fill="#EF3B2D">
-                            <path d="M248.032 44.676h-16.466v100.23h47.394v-14.748h-30.928V44.676zM337.091 87.202c-2.101-3.341-5.083-5.965-8.949-7.875-3.865-1.909-7.756-2.864-11.669-2.864-5.062 0-9.69.931-13.89 2.792-4.201 1.861-7.804 4.417-10.811 7.661-3.007 3.246-5.347 6.993-7.016 11.239-1.672 4.249-2.506 8.713-2.506 13.389 0 4.774.834 9.26 2.506 13.459 1.669 4.202 4.009 7.925 7.016 11.169 3.007 3.246 6.609 5.799 10.811 7.66 4.199 1.861 8.828 2.792 13.89 2.792 3.913 0 7.804-.955 11.669-2.863 3.866-1.908 6.849-4.533 8.949-7.875v9.021h15.607V78.182h-15.607v9.02zm-1.431 32.503c-.955 2.578-2.291 4.821-4.009 6.73-1.719 1.91-3.795 3.437-6.229 4.582-2.435 1.146-5.133 1.718-8.091 1.718-2.96 0-5.633-.572-8.019-1.718-2.387-1.146-4.438-2.672-6.156-4.582-1.719-1.909-3.032-4.152-3.938-6.73-.909-2.577-1.36-5.298-1.36-8.161 0-2.864.451-5.585 1.36-8.162.905-2.577 2.219-4.819 3.938-6.729 1.718-1.908 3.77-3.437 6.156-4.582 2.386-1.146 5.059-1.718 8.019-1.718 2.958 0 5.656.572 8.091 1.718 2.434 1.146 4.51 2.674 6.229 4.582 1.718 1.91 3.054 4.152 4.009 6.729.953 2.577 1.432 5.298 1.432 8.162-.001 2.863-.479 5.584-1.432 8.161zM463.954 87.202c-2.101-3.341-5.083-5.965-8.949-7.875-3.865-1.909-7.756-2.864-11.669-2.864-5.062 0-9.69.931-13.89 2.792-4.201 1.861-7.804 4.417-10.811 7.661-3.007 3.246-5.347 6.993-7.016 11.239-1.672 4.249-2.506 8.713-2.506 13.389 0 4.774.834 9.26 2.506 13.459 1.669 4.202 4.009 7.925 7.016 11.169 3.007 3.246 6.609 5.799 10.811 7.66 4.199 1.861 8.828 2.792 13.89 2.792 3.913 0 7.804-.955 11.669-2.863 3.866-1.908 6.849-4.533 8.949-7.875v9.021h15.607V78.182h-15.607v9.02zm-1.432 32.503c-.955 2.578-2.291 4.821-4.009 6.73-1.719 1.91-3.795 3.437-6.229 4.582-2.435 1.146-5.133 1.718-8.091 1.718-2.96 0-5.633-.572-8.019-1.718-2.387-1.146-4.438-2.672-6.156-4.582-1.719-1.909-3.032-4.152-3.938-6.73-.909-2.577-1.36-5.298-1.36-8.161 0-2.864.451-5.585 1.36-8.162.905-2.577 2.219-4.819 3.938-6.729 1.718-1.908 3.77-3.437 6.156-4.582 2.386-1.146 5.059-1.718 8.019-1.718 2.958 0 5.656.572 8.091 1.718 2.434 1.146 4.51 2.674 6.229 4.582 1.718 1.91 3.054 4.152 4.009 6.729.953 2.577 1.432 5.298 1.432 8.162 0 2.863-.479 5.584-1.432 8.161zM650.772 44.676h-15.606v100.23h15.606V44.676zM365.013 144.906h15.607V93.538h26.776V78.182h-42.383v66.724zM542.133 78.182l-19.616 51.096-19.616-51.096h-15.808l25.617 66.724h19.614l25.617-66.724h-15.808zM591.98 76.466c-19.112 0-34.239 15.706-34.239 35.079 0 21.416 14.641 35.079 36.239 35.079 12.088 0 19.806-4.622 29.234-14.688l-10.544-8.158c-.006.008-7.958 10.449-19.832 10.449-13.802 0-19.612-11.127-19.612-16.884h51.777c2.72-22.043-11.772-40.877-33.023-40.877zm-18.713 29.28c.12-1.284 1.917-16.884 18.589-16.884 16.671 0 18.697 15.598 18.813 16.884h-37.402zM184.068 43.892c-.024-.088-.073-.165-.104-.25-.058-.157-.108-.316-.191-.46-.056-.097-.137-.176-.203-.265-.087-.117-.161-.242-.265-.345-.085-.086-.194-.148-.29-.223-.109-.085-.206-.182-.327-.252l-.002-.001-.002-.002-35.648-20.524a2.971 2.971 0 00-2.964 0l-35.647 20.522-.002.002-.002.001c-.121.07-.219.167-.327.252-.096.075-.205.138-.29.223-.103.103-.178.228-.265.345-.066.089-.147.169-.203.265-.083.144-.133.304-.191.46-.031.085-.08.162-.104.25-.067.249-.103.51-.103.776v38.979l-29.706 17.103V24.493a3 3 0 00-.103-.776c-.024-.088-.073-.165-.104-.25-.058-.157-.108-.316-.191-.46-.056-.097-.137-.176-.203-.265-.087-.117-.161-.242-.265-.345-.085-.086-.194-.148-.29-.223-.109-.085-.206-.182-.327-.252l-.002-.001-.002-.002L40.098 1.396a2.971 2.971 0 00-2.964 0L1.487 21.919l-.002.002-.002.001c-.121.07-.219.167-.327.252-.096.075-.205.138-.29.223-.103.103-.178.228-.265.345-.066.089-.147.169-.203.265-.083.144-.133.304-.191.46-.031.085-.08.162-.104.25-.067.249-.103.51-.103.776v122.09c0 1.063.568 2.044 1.489 2.575l71.293 41.045c.156.089.324.143.49.202.078.028.15.074.23.095a2.98 2.98 0 001.524 0c.069-.018.132-.059.2-.083.176-.061.354-.119.519-.214l71.293-41.045a2.971 2.971 0 001.489-2.575v-38.979l34.158-19.666a2.971 2.971 0 001.489-2.575V44.666a3.075 3.075 0 00-.106-.774zM74.255 143.167l-29.648-16.779 31.136-17.926.001-.001 34.164-19.669 29.674 17.084-21.772 12.428-43.555 24.863zm68.329-76.259v33.841l-12.475-7.182-17.231-9.92V49.806l12.475 7.182 17.231 9.92zm2.97-39.335l29.693 17.095-29.693 17.095-29.693-17.095 29.693-17.095zM54.06 114.089l-12.475 7.182V46.733l17.231-9.92 12.475-7.182v74.537l-17.231 9.921zM38.614 7.398l29.693 17.095-29.693 17.095L8.921 24.493 38.614 7.398zM5.938 29.632l12.475 7.182 17.231 9.92v79.676l.001.005-.001.006c0 .114.032.221.045.333.017.146.021.294.059.434l.002.007c.032.117.094.222.14.334.051.124.088.255.156.371a.036.036 0 00.004.009c.061.105.149.191.222.288.081.105.149.22.244.314l.008.01c.084.083.19.142.284.215.106.083.202.178.32.247l.013.005.011.008 34.139 19.321v34.175L5.939 144.867V29.632h-.001zm136.646 115.235l-65.352 37.625V148.31l48.399-27.628 16.953-9.677v33.862zm35.646-61.22l-29.706 17.102V66.908l17.231-9.92 12.475-7.182v33.841z"/>
-                        </g>
-                    </svg>
+                <div>
+                    <span style="font-size:1.2rem;font-weight:800;color:white;display:block;letter-spacing:-0.3px;">
+                        ISI BURGER
+                    </span>
+                    <span style="font-size:0.65rem;color:rgba(255,255,255,0.45);display:block;font-weight:500;">
+                        Restaurant · Dakar, Sénégal
+                    </span>
                 </div>
+            </a>
 
-                <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
-                    <div class="grid grid-cols-1 md:grid-cols-2">
-                        <div class="p-6">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laravel.com/docs" class="underline text-gray-900 dark:text-white">Documentation</a></div>
+            <div class="d-flex align-items-center gap-2">
+                <a href="{{ route('catalogue.index') }}" class="nav-link-w d-none d-md-flex">
+                    <i class="bi bi-grid-3x3-gap-fill"></i> Catalogue
+                </a>
+                <a href="{{ route('commandes.index') }}" class="nav-link-w d-none d-md-flex">
+                    <i class="bi bi-bag-fill"></i> Mes commandes
+                </a>
+                <a href="{{ route('login') }}" class="nav-link-w btn-nav-login">
+                    <i class="bi bi-shield-lock-fill"></i> Espace Gestionnaire
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+{{-- ── HERO ── --}}
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div style="position:relative;z-index:2;">
+                    <div class="hero-badge">
+                        <i class="bi bi-star-fill"></i> #1 Burger à Dakar
+                    </div>
+                    <h1 class="hero-title">
+                        Le meilleur burger<br>
+                        de <span>Dakar</span> vous attend
+                    </h1>
+                    <p class="hero-sub">
+                        Commandez vos burgers préférés sans créer de compte.
+                        Livraison rapide, ingrédients frais, saveurs authentiques.
+                    </p>
+                    <div class="hero-btns">
+                        <a href="{{ route('catalogue.index') }}" class="btn-hero-primary">
+                            <i class="bi bi-grid-3x3-gap-fill"></i>
+                            Voir le catalogue
+                        </a>
+                        <a href="{{ route('commandes.create') }}" class="btn-hero-outline">
+                            <i class="bi bi-cart-plus-fill"></i>
+                            Commander maintenant
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="hero-stat-item">
+                            <div class="hsi-icon hsi-yellow">
+                                <i class="bi bi-egg-fried"></i>
                             </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel has wonderful, thorough documentation covering every aspect of the framework. Whether you are new to the framework or have previous experience with Laravel, we recommend reading all of the documentation from beginning to end.
-                                </div>
+                            <div>
+                                <span class="hsi-num">10+</span>
+                                <span class="hsi-lbl">Burgers au menu</span>
                             </div>
                         </div>
-
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-500"><path stroke-linecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" /></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laracasts.com" class="underline text-gray-900 dark:text-white">Laracasts</a></div>
+                        <div class="hero-stat-item">
+                            <div class="hsi-icon hsi-green">
+                                <i class="bi bi-lightning-charge-fill"></i>
                             </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript development. Check them out, see for yourself, and massively level up your development skills in the process.
-                                </div>
+                            <div>
+                                <span class="hsi-num">30 min</span>
+                                <span class="hsi-lbl">Préparation rapide</span>
                             </div>
                         </div>
-
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-500"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laravel-news.com/" class="underline text-gray-900 dark:text-white">Laravel News</a></div>
+                        <div class="hero-stat-item">
+                            <div class="hsi-icon hsi-blue">
+                                <i class="bi bi-truck"></i>
                             </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel News is a community driven portal and newsletter aggregating all of the latest and most important news in the Laravel ecosystem, including new package releases and tutorials.
-                                </div>
+                            <div>
+                                <span class="hsi-num">Livraison</span>
+                                <span class="hsi-lbl">Incluse</span>
                             </div>
                         </div>
-
-                        <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-500"><path stroke-linecap="round" stroke-linejoin="round" d="M6.115 5.19l.319 1.913A6 6 0 008.11 10.36L9.75 12l-.387.775c-.217.433-.132.956.21 1.298l1.348 1.348c.21.21.329.497.329.795v1.089c0 .426.24.815.622 1.006l.153.076c.433.217.956.132 1.298-.21l.723-.723a8.7 8.7 0 002.288-4.042 1.087 1.087 0 00-.358-1.099l-1.33-1.108c-.251-.21-.582-.299-.905-.245l-1.17.195a1.125 1.125 0 01-.98-.314l-.295-.295a1.125 1.125 0 010-1.591l.13-.132a1.125 1.125 0 011.3-.21l.603.302a.809.809 0 001.086-1.086L14.25 7.5l1.256-.837a4.5 4.5 0 001.528-1.732l.146-.292M6.115 5.19A9 9 0 1017.18 4.64M6.115 5.19A8.965 8.965 0 0112 3c1.929 0 3.716.607 5.18 1.64" /></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold text-gray-900 dark:text-white">Vibrant Ecosystem</div>
+                        <div class="hero-stat-item">
+                            <div class="hsi-icon hsi-red">
+                                <i class="bi bi-heart-fill"></i>
                             </div>
-
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel's robust library of first-party tools and libraries, such as <a href="https://forge.laravel.com" class="underline">Forge</a>, <a href="https://vapor.laravel.com" class="underline">Vapor</a>, <a href="https://nova.laravel.com" class="underline">Nova</a>, and <a href="https://envoyer.io" class="underline">Envoyer</a> help you take your projects to the next level. Pair them with powerful open source libraries like <a href="https://laravel.com/docs/billing" class="underline">Cashier</a>, <a href="https://laravel.com/docs/dusk" class="underline">Dusk</a>, <a href="https://laravel.com/docs/broadcasting" class="underline">Echo</a>, <a href="https://laravel.com/docs/horizon" class="underline">Horizon</a>, <a href="https://laravel.com/docs/sanctum" class="underline">Sanctum</a>, <a href="https://laravel.com/docs/telescope" class="underline">Telescope</a>, and more.
-                                </div>
+                            <div>
+                                <span class="hsi-num">100%</span>
+                                <span class="hsi-lbl">Satisfaction client</span>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
-                    <div class="text-center text-sm text-gray-500 sm:text-left">
-                        <div class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-mt-px w-5 h-5 text-gray-400">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-                            </svg>
-
-                            <a href="https://laravel.bigcartel.com" class="ml-1 underline">
-                                Shop
-                            </a>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-4 -mt-px w-5 h-5 text-gray-400">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                            </svg>
-
-                            <a href="https://github.com/sponsors/taylorotwell" class="ml-1 underline">
-                                Sponsor
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
-                        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+            <div class="col-lg-6 text-center" style="position:relative;z-index:2;">
+                <span class="hero-emoji">🍔</span>
+                <div style="margin-top:20px;display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:14px 22px;backdrop-filter:blur(8px);">
+                    <i class="bi bi-shield-check-fill" style="color:var(--yellow);font-size:1.3rem;"></i>
+                    <div style="text-align:left;">
+                        <div style="font-size:0.88rem;font-weight:800;color:white;">Commande sans compte</div>
+                        <div style="font-size:0.72rem;color:rgba(255,255,255,0.5);">Juste votre nom et adresse</div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</section>
+
+{{-- ── FEATURES ── --}}
+<section class="features-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <div class="section-badge">
+                <i class="bi bi-lightning-charge-fill"></i> Nos avantages
+            </div>
+            <h2 class="section-title-main">
+                Pourquoi choisir ISI BURGER ?
+            </h2>
+            <p class="section-sub mx-auto">
+                Une expérience simple, rapide et délicieuse.
+                Pas besoin de créer un compte pour commander.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3" style="animation-delay:0.1s;">
+                <div class="feature-card">
+                    <div class="feature-icon fi-yellow">
+                        <i class="bi bi-egg-fried"></i>
+                    </div>
+                    <h4 class="feature-title">Burgers Premium</h4>
+                    <p class="feature-desc">
+                        Ingrédients frais sélectionnés chaque jour.
+                        Recettes uniques et savoureuses.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3" style="animation-delay:0.15s;">
+                <div class="feature-card">
+                    <div class="feature-icon fi-blue">
+                        <i class="bi bi-cart-check-fill"></i>
+                    </div>
+                    <h4 class="feature-title">Sans inscription</h4>
+                    <p class="feature-desc">
+                        Commandez directement sans créer de compte.
+                        Juste votre nom, email et adresse.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3" style="animation-delay:0.2s;">
+                <div class="feature-card">
+                    <div class="feature-icon fi-green">
+                        <i class="bi bi-truck"></i>
+                    </div>
+                    <h4 class="feature-title">Livraison rapide</h4>
+                    <p class="feature-desc">
+                        Votre commande préparée et livrée
+                        à votre adresse en un temps record.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-3" style="animation-delay:0.25s;">
+                <div class="feature-card">
+                    <div class="feature-icon fi-orange">
+                        <i class="bi bi-envelope-fill"></i>
+                    </div>
+                    <h4 class="feature-title">Suivi par email</h4>
+                    <p class="feature-desc">
+                        Recevez une confirmation et votre facture
+                        PDF dès que votre commande est prête.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ── CTA ── --}}
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <div class="section-badge mx-auto" style="background:rgba(255,193,7,0.2);color:var(--yellow);margin-bottom:16px;">
+                <i class="bi bi-fire"></i> Commander maintenant
+            </div>
+            <h2 class="cta-title">
+                Prêt à déguster un <span>burger</span> ?
+            </h2>
+            <p class="cta-sub">
+                Explorez notre catalogue et passez votre commande en quelques clics.
+                Livraison incluse, satisfaction garantie !
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="{{ route('catalogue.index') }}" class="btn-hero-primary">
+                    <i class="bi bi-grid-3x3-gap-fill"></i>
+                    Voir le catalogue
+                </a>
+                <a href="{{ route('commandes.create') }}" class="btn-hero-outline">
+                    <i class="bi bi-cart-plus-fill"></i>
+                    Commander directement
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ── FOOTER ── --}}
+<footer class="footer-welcome">
+    <div class="container">
+        <div class="row g-4 mb-4">
+            <div class="col-lg-4">
+                <div class="footer-brand-icon">
+                    <i class="bi bi-egg-fried"></i>
+                </div>
+                <h5 style="font-weight:800;color:white;margin-bottom:8px;">ISI BURGER</h5>
+                <p style="color:rgba(255,255,255,0.45);font-size:0.875rem;line-height:1.7;margin-bottom:14px;">
+                    Votre restaurant de burgers premium à Dakar.
+                    Commandez sans compte, profitez à fond.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="bi bi-twitter-x"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <h6 style="font-weight:800;color:white;margin-bottom:16px;text-transform:uppercase;font-size:0.8rem;letter-spacing:0.5px;">
+                    Navigation
+                </h6>
+                <ul class="footer-links">
+                    <li>
+                        <a href="{{ route('catalogue.index') }}">
+                            <i class="bi bi-chevron-right"></i> Catalogue
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('commandes.create') }}">
+                            <i class="bi bi-chevron-right"></i> Commander
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('commandes.index') }}">
+                            <i class="bi bi-chevron-right"></i> Mes commandes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('login') }}">
+                            <i class="bi bi-chevron-right"></i> Espace Gestionnaire
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-4">
+                <h6 style="font-weight:800;color:white;margin-bottom:16px;text-transform:uppercase;font-size:0.8rem;letter-spacing:0.5px;">
+                    Contact
+                </h6>
+                <div class="footer-contact-item">
+                    <i class="bi bi-geo-alt-fill"></i> Dakar, Sénégal
+                </div>
+                <div class="footer-contact-item">
+                    <i class="bi bi-telephone-fill"></i> +221 77 123 45 67
+                </div>
+                <div class="footer-contact-item">
+                    <i class="bi bi-envelope-fill"></i> contact@isiburger.com
+                </div>
+                <div class="footer-contact-item">
+                    <i class="bi bi-clock-fill"></i> Lun–Sam : 10h – 22h
+                </div>
+            </div>
+        </div>
+        <hr style="border-color:rgba(255,255,255,0.1);margin:0 0 20px;">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <p style="color:rgba(255,255,255,0.35);font-size:0.78rem;margin:0;">
+                © {{ date('Y') }} ISI BURGER — Tous droits réservés
+            </p>
+            <p style="color:rgba(255,255,255,0.35);font-size:0.78rem;margin:0;">
+                Fait avec <i class="bi bi-heart-fill text-danger"></i> à Dakar
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

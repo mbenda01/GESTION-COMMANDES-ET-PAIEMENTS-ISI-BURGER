@@ -2,60 +2,45 @@
 
 namespace App\Notifications;
 
+use App\Models\Commande;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\MailMessage;
 
 class CommandePreteNotification extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(public Commande $commande) {}
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
+    public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
+        $commande = $this->commande->load(['produits', 'paiement']);
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
+        $pdf = Pdf::loadView('pdf.facture', compact('commande'))
+                  ->setPaper('a4', 'portrait');
+
+        $nomFichier = 'facture-commande-' . str_pad($commande->id, 5, '0', STR_PAD_LEFT) . '.pdf';
+
+        $nomClient = $commande->nom_complet_client;
+
+        return (new MailMessage)
+            ->subject('🍔 Votre commande #' . str_pad($commande->id, 5, '0', STR_PAD_LEFT) . ' est prête !')
+            ->greeting('Bonjour ' . $nomClient . ' !')
+            ->line('Bonne nouvelle ! Votre commande est prête et vous attend.')
+            ->line('**Numéro de commande :** #' . str_pad($commande->id, 5, '0', STR_PAD_LEFT))
+            ->line('**Montant total :** ' . number_format($commande->montant_total, 0, ',', ' ') . ' FCFA')
+            ->line('**Adresse de livraison :** ' . $commande->adresse_livraison)
+            ->line('Votre facture est disponible en pièce jointe.')
+            ->attachData($pdf->output(), $nomFichier, [
+                'mime' => 'application/pdf',
+            ])
+            ->salutation('Merci de votre confiance — ISI BURGER 🍔');
     }
 }
