@@ -191,9 +191,22 @@
 
 {{-- ── KPI ── --}}
 @php
-    $total      = $commandes->total();
-    $enCours    = $commandes->getCollection()->whereIn('statut', ['en_attente','en_preparation'])->count();
-    $montantTotal = $commandes->getCollection()->sum('montant_total');
+    $total = $commandes->total();
+
+    if (Auth::check()) {
+        $enCours = \App\Models\Commande::where('user_id', Auth::id())
+            ->whereIn('statut', ['en_attente','en_preparation'])
+            ->count();
+        $montantTotal = \App\Models\Commande::where('user_id', Auth::id())
+            ->sum('montant_total');
+    } else {
+        $ids = session('commandes_ids', []);
+        $enCours = \App\Models\Commande::whereIn('id', $ids)
+            ->whereIn('statut', ['en_attente','en_preparation'])
+            ->count();
+        $montantTotal = \App\Models\Commande::whereIn('id', $ids)
+            ->sum('montant_total');
+    }
 @endphp
 
 <div class="kpi-row">
@@ -322,6 +335,11 @@
         </li>
     </ul>
 </nav>
+@if(session('success'))
+<script>
+    localStorage.removeItem('isi_panier');
+</script>
+@endif
 @endif
 
 @endsection

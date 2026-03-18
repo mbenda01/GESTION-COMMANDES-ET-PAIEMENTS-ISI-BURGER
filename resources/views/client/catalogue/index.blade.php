@@ -177,7 +177,6 @@
 
     .section-title i { color: var(--yellow); }
 
-    /* ── PRODUCT CARDS ── */
     .burger-card {
         background: white;
         border-radius: 18px;
@@ -384,6 +383,12 @@
         pointer-events: none;
     }
 </style>
+<script>
+    function showRuptureModal(nom) {
+        document.getElementById('ruptureNom').textContent = nom;
+        new bootstrap.Modal(document.getElementById('modalRupture')).show();
+    }
+</script>
 @endpush
 
 {{-- ── HERO ── --}}
@@ -514,23 +519,30 @@
                 @endif
             </div>
 
-            <div class="card-footer-isi">
-                <a href="{{ route('catalogue.show', $produit) }}"
-                   class="btn-detail-card">
-                    <i class="bi bi-eye-fill"></i> Détail
-                </a>
+        <div class="card-footer-isi">
+            <a href="{{ route('catalogue.show', $produit) }}"
+            class="btn-detail-card">
+                <i class="bi bi-eye-fill"></i> Détail
+            </a>
 
-                @if($produit->estDisponible())
-                    <a href="{{ route('commandes.create') }}?produit={{ $produit->id }}"
-                       class="btn-commander-card">
-                        <i class="bi bi-cart-plus-fill"></i> Commander
-                    </a>
-                @else
-                    <span class="btn-commander-card disabled-btn">
-                        <i class="bi bi-slash-circle"></i> Indisponible
-                    </span>
-                @endif
-            </div>
+            @if($produit->estDisponible())
+                <a href="{{ route('commandes.create') }}?produit={{ $produit->id }}"
+                class="btn-commander-card">
+                    <i class="bi bi-cart-plus-fill"></i> Commander
+                </a>
+            @elseif(!$produit->archive && $produit->bloque)
+                {{-- Bloqué : bouton grisé + modal --}}
+                <button type="button"
+                        class="btn-commander-card disabled-btn"
+                        onclick="showRuptureModal('{{ $produit->nom }}')">
+                    <i class="bi bi-slash-circle"></i> Rupture de stock
+                </button>
+            @else
+                <span class="btn-commander-card disabled-btn">
+                    <i class="bi bi-slash-circle"></i> Indisponible
+                </span>
+            @endif
+        </div>
 
         </div>
     </div>
@@ -573,5 +585,38 @@
     </ul>
 </nav>
 @endif
-
+{{-- ── MODAL RUPTURE ── --}}
+<div class="modal fade modal-isi" id="modalRupture" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background:linear-gradient(135deg,var(--danger),#b91c1c);">
+                <h5 class="modal-title" style="color:white;font-weight:800;display:flex;align-items:center;gap:8px;">
+                    <i class="bi bi-exclamation-triangle-fill" style="color:#fca5a5;"></i>
+                    Rupture de stock
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" style="text-align:center;padding:28px 24px;">
+                <div style="width:64px;height:64px;background:var(--danger-light);border-radius:16px;
+                            display:flex;align-items:center;justify-content:center;
+                            margin:0 auto 16px;font-size:1.8rem;color:var(--danger);">
+                    <i class="bi bi-box-seam"></i>
+                </div>
+                <h6 id="ruptureNom" style="font-size:1rem;font-weight:800;color:var(--gray-900);margin-bottom:8px;"></h6>
+                <p style="font-size:0.875rem;color:var(--gray-400);margin:0;">
+                    Ce burger est temporairement en rupture de stock.<br>
+                    Revenez bientôt ou commandez un autre burger !
+                </p>
+            </div>
+            <div class="modal-footer" style="justify-content:center;gap:10px;padding-bottom:20px;border:none;">
+                <button type="button" class="btn-isi-outline" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg"></i> Fermer
+                </button>
+                <a href="{{ route('catalogue.index') }}" class="btn-isi-yellow">
+                    <i class="bi bi-grid-3x3-gap-fill"></i> Voir d'autres burgers
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

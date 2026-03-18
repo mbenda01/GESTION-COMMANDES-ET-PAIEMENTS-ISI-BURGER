@@ -224,7 +224,6 @@
 </style>
 @endpush
 
-{{-- ── HEADER ── --}}
 <div class="page-header-isi">
     <div>
         <h2 class="page-title-isi">
@@ -240,7 +239,6 @@
     </div>
 </div>
 
-{{-- ── KPI CARDS ── --}}
 <div class="stats-kpi-grid">
 
     <div class="stats-kpi-card skpi-orange">
@@ -284,7 +282,6 @@
 
 </div>
 
-{{-- ── GRAPHIQUES ── --}}
 <div class="charts-row-1">
 
     {{-- Commandes par mois --}}
@@ -307,7 +304,7 @@
         </div>
     </div>
 
-    {{-- Top Produits --}}
+
     <div class="chart-card" style="animation-delay:0.25s;">
         <div class="chart-card-header">
             <div>
@@ -346,7 +343,6 @@
 
 </div>
 
-{{-- Graphique doughnut --}}
 <div class="row g-4">
     <div class="col-md-6">
         <div class="chart-card" style="animation-delay:0.3s;">

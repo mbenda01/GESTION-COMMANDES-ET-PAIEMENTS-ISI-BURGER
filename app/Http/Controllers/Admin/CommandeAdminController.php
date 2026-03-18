@@ -27,8 +27,6 @@ class CommandeAdminController extends Controller
     public function updateStatut(UpdateStatutRequest $request, Commande $commande)
     {
         $commande->update(['statut' => $request->validated()['statut']]);
-
-        // Envoi email + PDF quand commande est prête
         if ($request->validated()['statut'] === 'prete') {
             $commande->user->notify(new CommandePreteNotification($commande));
         }

@@ -10,7 +10,6 @@ on:
 
 jobs:
 
-  # ─── JOB 1 : Tests & Build ───────────────────────────
   build:
     name: Install & Build
     runs-on: ubuntu-latest
@@ -72,7 +71,6 @@ jobs:
       - name: Build frontend
         run: npm run build
 
-  # ─── JOB 2 : Docker Image ────────────────────────────
   docker:
     name: Build Docker Image
     runs-on: ubuntu-latest

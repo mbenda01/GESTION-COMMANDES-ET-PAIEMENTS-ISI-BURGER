@@ -57,7 +57,7 @@ class ProduitSeeder extends Seeder
                 'prix'        => 2600,
                 'description' => 'Filet de poisson pané, sauce tartare',
                 'stock'       => 10,
-                'image'       => 'https://images.unsplash.com/photo-1612392062798-3a9db4fd5058?w=400',
+                'image'       => 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400',
             ],
             [
                 'nom'         => 'Mushroom Burger',

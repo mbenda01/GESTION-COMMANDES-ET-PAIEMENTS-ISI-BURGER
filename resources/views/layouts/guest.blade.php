@@ -53,7 +53,6 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        /* ── PANNEAU GAUCHE ── */
         .auth-left {
             flex: 1;
             background: linear-gradient(160deg, var(--blue-900) 0%, #0f1e4a 60%, var(--blue-800) 100%);
@@ -206,7 +205,6 @@
             font-weight: 500;
         }
 
-        /* ── PANNEAU DROIT ── */
         .auth-right {
             width: 500px;
             flex-shrink: 0;

@@ -143,7 +143,6 @@
 </style>
 @endpush
 
-{{-- ── BREADCRUMB ── --}}
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;font-size:0.85rem;">
     <a href="{{ route('admin.produits.index') }}"
        style="color:var(--blue);text-decoration:none;font-weight:600;display:flex;align-items:center;gap:5px;">
@@ -163,7 +162,8 @@
                 </h5>
             </div>
             <div class="form-card-body">
-                <form method="POST" action="{{ route('admin.produits.update', $produit) }}">
+                <form method="POST" action="{{ route('admin.produits.update', $produit) }}"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 

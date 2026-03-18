@@ -23,7 +23,7 @@ class CommandeConfirmeeNotification extends Notification
         $nomClient = $this->commande->nom_complet_client;
 
         return (new MailMessage)
-            ->subject('✅ Confirmation de votre commande #' . str_pad($this->commande->id, 5, '0', STR_PAD_LEFT))
+            ->subject(' Confirmation de votre commande #' . str_pad($this->commande->id, 5, '0', STR_PAD_LEFT))
             ->greeting('Bonjour ' . $nomClient . ' !')
             ->line('Votre commande a bien été reçue et est en cours de traitement.')
             ->line('**Numéro de commande :** #' . str_pad($this->commande->id, 5, '0', STR_PAD_LEFT))

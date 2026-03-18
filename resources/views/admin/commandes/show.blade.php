@@ -248,7 +248,6 @@
 </style>
 @endpush
 
-{{-- ── HERO ── --}}
 <div class="admin-cmd-hero">
     <div class="hero-content">
         <div>
@@ -280,7 +279,6 @@
 
 <div class="admin-cmd-grid">
 
-    {{-- ── COLONNE GAUCHE ── --}}
     <div>
 
         {{-- Produits --}}
@@ -363,7 +361,6 @@
 
     </div>
 
-    {{-- ── COLONNE DROITE ── --}}
     <div>
 
         {{-- Changer statut --}}

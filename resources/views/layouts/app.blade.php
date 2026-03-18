@@ -51,7 +51,6 @@
 
         .fade-in { animation: fadeInUp 0.4s ease both; }
 
-        /* ── NAVBAR ── */
         .navbar-isi {
             background: linear-gradient(90deg, var(--blue-900) 0%, #0f1e4a 100%);
             border-bottom: 3px solid var(--yellow);
@@ -253,7 +252,6 @@
             border-left: 4px solid var(--warning);
         }
 
-        /* ── CARDS ── */
         .card-isi {
             background: white;
             border-radius: 16px;
@@ -267,7 +265,6 @@
             box-shadow: 0 8px 30px rgba(10,42,110,0.12);
         }
 
-        /* ── BADGES STATUT ── */
         .badge-statut {
             display: inline-flex;
             align-items: center;
@@ -285,7 +282,6 @@
         .badge-payee          { background: #e8f5e9; color: #2e7d32; }
         .badge-annulee        { background: var(--danger-light); color: var(--danger); }
 
-        /* ── BUTTONS ── */
         .btn-isi-primary {
             background: linear-gradient(135deg, var(--blue-900), var(--blue-800));
             color: white;
@@ -352,7 +348,6 @@
             background: var(--blue-light);
         }
 
-        /* ── PAGE HEADER ── */
         .page-header-isi {
             display: flex;
             justify-content: space-between;
@@ -380,7 +375,6 @@
             font-weight: 400;
         }
 
-        /* ── TABLE ── */
         .table-isi {
             width: 100%;
             border-collapse: collapse;
@@ -424,7 +418,6 @@
             overflow: hidden;
         }
 
-        /* ── PAGINATION ── */
         .pagination-isi {
             display: flex;
             gap: 6px;
@@ -468,7 +461,6 @@
             cursor: not-allowed;
         }
 
-        /* ── FOOTER ── */
         .footer-isi {
             background: linear-gradient(160deg, var(--blue-900) 0%, #0f1e4a 100%);
             border-top: 3px solid var(--yellow);
@@ -489,19 +481,16 @@
             color: rgba(255,255,255,0.45);
         }
 
-        /* ── PRICE ── */
         .price-isi {
             color: var(--blue-900);
             font-weight: 800;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        /* ── STOCK BADGES ── */
         .stock-ok      { background: var(--success-light); color: var(--success); }
         .stock-faible  { background: var(--warning-light); color: var(--warning); }
         .stock-rupture { background: var(--danger-light);  color: var(--danger); }
 
-        /* ── MODAL CLIENT INFO ── */
         .modal-isi .modal-content {
             border-radius: 20px;
             border: none;
@@ -526,15 +515,9 @@
         }
 
         .modal-isi .modal-title i { color: var(--yellow); }
-
         .modal-isi .btn-close { filter: invert(1); }
-
         .modal-isi .modal-body { padding: 24px; }
-
-        .modal-isi .modal-footer {
-            padding: 16px 24px 20px;
-            border: none;
-        }
+        .modal-isi .modal-footer { padding: 16px 24px 20px; border: none; }
 
         .form-label-isi {
             font-size: 0.82rem;
@@ -557,7 +540,6 @@
             box-shadow: 0 0 0 3px rgba(13,110,253,0.1);
         }
 
-        /* ── EMPTY STATE ── */
         .empty-state-isi {
             text-align: center;
             padding: 80px 20px;
@@ -615,21 +597,26 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto ms-4 gap-1">
+
+                {{-- ✅ Catalogue : toujours visible pour tout le monde --}}
                 <li class="nav-item">
                     <a class="nav-link-isi {{ request()->routeIs('catalogue.*') ? 'active' : '' }}"
                        href="{{ route('catalogue.index') }}">
                         <i class="bi bi-grid-3x3-gap-fill"></i> Catalogue
                     </a>
                 </li>
+
+                {{-- Mes commandes : visible uniquement pour les clients (non gestionnaire) --}}
                 @if(!auth()->check() || !auth()->user()->hasRole('Gestionnaire'))
                 <li class="nav-item">
                     <a class="nav-link-isi {{ request()->routeIs('commandes.*') ? 'active' : '' }}"
-                    href="{{ route('commandes.index') }}">
+                       href="{{ route('commandes.index') }}">
                         <i class="bi bi-bag-fill"></i> Mes commandes
                     </a>
                 </li>
                 @endif
 
+                {{-- Menu Gestionnaire : visible uniquement si connecté avec rôle Gestionnaire --}}
                 @auth
                     @role('Gestionnaire')
                     <li class="nav-item">
@@ -652,6 +639,7 @@
                     </li>
                     @endrole
                 @endauth
+
             </ul>
 
             <ul class="navbar-nav ms-auto align-items-center gap-2">

@@ -375,27 +375,6 @@
 
 </form>
 
-{{-- Credentials de test --}}
-<div class="divider-auth">
-    <span>Identifiants de test</span>
-</div>
-
-<div class="credentials-box">
-    <div class="credentials-header">
-        <i class="bi bi-info-circle-fill"></i>
-        <span>Comptes disponibles</span>
-    </div>
-    <div class="credentials-list">
-        <div class="credential-item" onclick="fillCredentials('admin@isiburger.com', 'password')">
-            <div class="cred-avatar">AD</div>
-            <div>
-                <span class="cred-email">admin@isiburger.com</span>
-                <span class="cred-pass">Mot de passe : password</span>
-            </div>
-            <i class="bi bi-arrow-right-circle ms-auto" style="color: var(--blue); font-size: 1rem;"></i>
-        </div>
-    </div>
-</div>
 
 @push('scripts')
 <script>

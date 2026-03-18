@@ -100,7 +100,6 @@
 </style>
 @endpush
 
-{{-- ── BREADCRUMB ── --}}
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;font-size:0.85rem;">
     <a href="{{ route('admin.produits.index') }}"
        style="color:var(--blue);text-decoration:none;font-weight:600;display:flex;align-items:center;gap:5px;">
@@ -117,7 +116,8 @@
                 <h5><i class="bi bi-plus-circle-fill"></i> Ajouter un nouveau burger</h5>
             </div>
             <div class="form-card-body">
-                <form method="POST" action="{{ route('admin.produits.store') }}">
+                <form method="POST" action="{{ route('admin.produits.store') }}"
+                        enctype="multipart/form-data">
                     @csrf
 
                     <div class="row g-4">
@@ -205,28 +205,71 @@
                             </div>
                         </div>
 
-                        {{-- Image URL --}}
+                        {{-- Image --}}
                         <div class="col-12">
                             <div class="form-group-isi">
                                 <label class="form-label-isi">
-                                    <i class="bi bi-image-fill"></i> URL de l'image
+                                    <i class="bi bi-image-fill"></i> Image du burger
                                 </label>
-                                <input
-                                    type="url"
-                                    name="image"
-                                    id="imageUrl"
-                                    value="{{ old('image') }}"
-                                    class="form-control-isi {{ $errors->has('image') ? 'is-invalid' : '' }}"
-                                    placeholder="https://exemple.com/burger.jpg">
-                                @error('image')
-                                    <div class="invalid-msg">
-                                        <i class="bi bi-exclamation-circle-fill"></i> {{ $message }}
-                                    </div>
-                                @enderror
-                                <div class="preview-box {{ old('image') ? 'visible' : '' }}" id="previewBox">
-                                    <img id="previewImg"
-                                         src="{{ old('image', '') }}"
-                                         alt="Aperçu">
+
+                                {{-- Tabs URL / Upload --}}
+                                <div style="display:flex;gap:8px;margin-bottom:10px;">
+                                    <button type="button" class="tab-img-btn active" id="tabUrl"
+                                            onclick="switchTab('url')"
+                                            style="flex:1;padding:8px;border-radius:8px;border:2px solid var(--blue);
+                                                background:var(--blue-light);color:var(--blue);font-weight:700;
+                                                font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;cursor:pointer;">
+                                        <i class="bi bi-link-45deg"></i> URL en ligne
+                                    </button>
+                                    <button type="button" class="tab-img-btn" id="tabFile"
+                                            onclick="switchTab('file')"
+                                            style="flex:1;padding:8px;border-radius:8px;border:2px solid var(--gray-200);
+                                                background:white;color:var(--gray-600);font-weight:700;
+                                                font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;cursor:pointer;">
+                                        <i class="bi bi-upload"></i> Depuis mon PC
+                                    </button>
+                                </div>
+
+                                {{-- Zone URL --}}
+                                <div id="zoneUrl">
+                                    <input type="url" name="image_url" id="imageUrl"
+                                        value="{{ old('image_url') }}"
+                                        class="form-control-isi {{ $errors->has('image_url') ? 'is-invalid' : '' }}"
+                                        placeholder="https://exemple.com/burger.jpg">
+                                    @error('image_url')
+                                        <div class="invalid-msg"><i class="bi bi-exclamation-circle-fill"></i> {{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                {{-- Zone Upload --}}
+                                <div id="zoneFile" style="display:none;">
+                                    <label for="imageFile"
+                                        style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+                                                border:2px dashed var(--gray-200);border-radius:12px;padding:28px;
+                                                cursor:pointer;transition:all 0.2s;background:var(--gray-50);"
+                                        id="dropZone">
+                                        <i class="bi bi-cloud-arrow-up-fill"
+                                        style="font-size:2rem;color:var(--blue);margin-bottom:8px;"></i>
+                                        <span style="font-size:0.85rem;font-weight:700;color:var(--gray-700);">
+                                            Cliquez ou glissez une image ici
+                                        </span>
+                                        <span style="font-size:0.75rem;color:var(--gray-400);margin-top:4px;">
+                                            JPG, PNG, WEBP — max 2 Mo
+                                        </span>
+                                    </label>
+                                    <input type="file" name="image_file" id="imageFile"
+                                        accept="image/jpeg,image/png,image/jpg,image/webp"
+                                        style="display:none;">
+                                    @error('image_file')
+                                        <div class="invalid-msg"><i class="bi bi-exclamation-circle-fill"></i> {{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                {{-- Aperçu commun --}}
+                                <div class="preview-box {{ old('image_url') ? 'visible' : '' }}" id="previewBox"
+                                    style="margin-top:10px;">
+                                    <img id="previewImg" src="{{ old('image_url', '') }}" alt="Aperçu"
+                                        style="width:100%;height:160px;object-fit:cover;border-radius:10px;">
                                 </div>
                             </div>
                         </div>
@@ -250,19 +293,62 @@
 
 @push('scripts')
 <script>
-    const imageUrl  = document.getElementById('imageUrl');
-    const previewBox = document.getElementById('previewBox');
-    const previewImg = document.getElementById('previewImg');
+    function switchTab(tab) {
+        const zoneUrl  = document.getElementById('zoneUrl');
+        const zoneFile = document.getElementById('zoneFile');
+        const tabUrl   = document.getElementById('tabUrl');
+        const tabFile  = document.getElementById('tabFile');
 
-    imageUrl.addEventListener('input', function () {
-        const url = this.value.trim();
-        if (url) {
-            previewImg.src = url;
-            previewBox.classList.add('visible');
+        if (tab === 'url') {
+            zoneUrl.style.display  = 'block';
+            zoneFile.style.display = 'none';
+            tabUrl.style.border    = '2px solid var(--blue)';
+            tabUrl.style.background = 'var(--blue-light)';
+            tabUrl.style.color     = 'var(--blue)';
+            tabFile.style.border   = '2px solid var(--gray-200)';
+            tabFile.style.background = 'white';
+            tabFile.style.color    = 'var(--gray-600)';
         } else {
-            previewBox.classList.remove('visible');
+            zoneUrl.style.display  = 'none';
+            zoneFile.style.display = 'block';
+            tabFile.style.border   = '2px solid var(--blue)';
+            tabFile.style.background = 'var(--blue-light)';
+            tabFile.style.color    = 'var(--blue)';
+            tabUrl.style.border    = '2px solid var(--gray-200)';
+            tabUrl.style.background = 'white';
+            tabUrl.style.color     = 'var(--gray-600)';
+        }
+    }
+
+    document.getElementById('imageUrl')?.addEventListener('input', function () {
+        const url = this.value.trim();
+        const box = document.getElementById('previewBox');
+        const img = document.getElementById('previewImg');
+        if (url) {
+            img.src = url;
+            box.classList.add('visible');
+        } else {
+            box.classList.remove('visible');
         }
     });
+
+    document.getElementById('imageFile')?.addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const img = document.getElementById('previewImg');
+            const box = document.getElementById('previewBox');
+            img.src = e.target.result;
+            box.classList.add('visible');
+        };
+        reader.readAsDataURL(file);
+    });
+
+    document.getElementById('dropZone')?.addEventListener('click', function () {
+        document.getElementById('imageFile').click();
+    });
+
 </script>
 @endpush
 

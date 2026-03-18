@@ -12,7 +12,10 @@ class ProduitController extends Controller
 {
     public function index()
     {
-        $produits = Produit::orderBy('created_at', 'desc')->paginate(6);
+        $produits = Produit::where('archive', false)
+            ->orderBy('created_at', 'desc')
+            ->paginate(6);
+
         return view('admin.produits.index', compact('produits'));
     }
 
@@ -25,6 +28,9 @@ class ProduitController extends Controller
     {
         $data = $request->validated();
         $data['bloque'] = isset($data['stock']) && $data['stock'] <= 0;
+
+        $data['image'] = $this->handleImage($request, null);
+        unset($data['image_url'], $data['image_file']);
 
         Produit::create($data);
 
@@ -46,6 +52,12 @@ class ProduitController extends Controller
     {
         $data = $request->validated();
         $data['bloque'] = isset($data['stock']) && $data['stock'] <= 0;
+        $imageResult = $this->handleImage($request, $produit->image);
+        if ($imageResult !== null) {
+            $data['image'] = $imageResult;
+        }
+
+        unset($data['image_url'], $data['image_file']);
 
         $produit->update($data);
 
@@ -56,7 +68,6 @@ class ProduitController extends Controller
     public function destroy(Produit $produit)
     {
         $produit->delete();
-
         return redirect()->route('admin.produits.index')
             ->with('success', 'Burger supprimé avec succès.');
     }
@@ -64,9 +75,7 @@ class ProduitController extends Controller
     public function toggleArchive(Produit $produit)
     {
         $produit->update(['archive' => !$produit->archive]);
-
         $message = $produit->archive ? 'Burger archivé.' : 'Burger désarchivé.';
-
         return redirect()->route('admin.produits.index')
             ->with('success', $message);
     }
@@ -105,5 +114,22 @@ class ProduitController extends Controller
 
         return redirect()->route('admin.produits.index')
             ->with('success', $msg);
+    }
+    private function handleImage($request, ?string $current): ?string
+    {
+        if ($request->hasFile('image_file') && $request->file('image_file')->isValid()) {
+            if ($current && str_starts_with($current, '/storage/')) {
+                $path = str_replace('/storage/', 'public/', $current);
+                \Storage::delete($path);
+            }
+            $path = $request->file('image_file')->store('produits', 'public');
+            return '/storage/' . $path;
+        }
+
+        if ($request->filled('image_url')) {
+            return $request->input('image_url');
+        }
+
+        return $current;
     }
 }

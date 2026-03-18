@@ -575,11 +575,15 @@
         </div>
 
         {{-- Bouton retour --}}
-        <a href="{{ route('commandes.index') }}" class="btn-isi-outline w-100 justify-content-center mt-3">
+        <a href="{{ route('commandes.index') }}"
+        class="btn-isi-outline w-100 justify-content-center mt-3"
+        style="text-decoration:none;">
             <i class="bi bi-arrow-left"></i> Retour à mes commandes
         </a>
 
-        <a href="{{ route('catalogue.index') }}" class="btn-isi-yellow w-100 justify-content-center mt-2">
+        <a href="{{ route('catalogue.index') }}"
+        class="btn-isi-yellow w-100 justify-content-center mt-2"
+        style="text-decoration:none;">
             <i class="bi bi-grid-3x3-gap-fill"></i> Continuer mes achats
         </a>
 

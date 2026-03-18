@@ -240,10 +240,10 @@
 
 {{-- ── KPI ── --}}
 @php
-    $enAttente    = \App\Models\Commande::whereDate('created_at', today())->where('statut','en_attente')->count();
-    $enPrep       = \App\Models\Commande::whereDate('created_at', today())->where('statut','en_preparation')->count();
+    $enAttente     = \App\Models\Commande::whereDate('created_at', today())->where('statut','en_attente')->count();
+    $enPrep        = \App\Models\Commande::whereDate('created_at', today())->where('statut','en_preparation')->count();
     $pretesAujourd = \App\Models\Commande::whereDate('created_at', today())->where('statut','prete')->count();
-    $recetteJour  = \App\Models\Paiement::whereDate('date_paiement', today())->sum('montant');
+    $recetteJour   = \App\Models\Paiement::whereDate('date_paiement', today())->sum('montant');
 @endphp
 
 <div class="commandes-kpi">
@@ -363,21 +363,27 @@
         </span>
     </div>
 
+    {{-- ── ACTIONS ── --}}
     <div class="cmd-actions">
-        <a href="{{ route('admin.commandes.show', $commande) }}"
-           class="btn-cmd-voir">
+        <a href="{{ route('admin.commandes.show', $commande) }}" class="btn-cmd-voir">
             <i class="bi bi-eye-fill"></i> Voir
         </a>
+
         @if($commande->estAnnulable())
-        <form method="POST"
-              action="{{ route('admin.commandes.destroy', $commande) }}"
-              onsubmit="return confirm('Annuler cette commande ?')">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn-cmd-annuler">
+            <button type="button"
+                    class="btn-cmd-annuler"
+                    onclick="ouvrirModalAnnulation({{ $commande->id }}, '{{ str_pad($commande->id, 5, '0', STR_PAD_LEFT) }}')">
                 <i class="bi bi-x-lg"></i>
             </button>
-        </form>
+
+            {{-- Formulaire caché soumis par le modal --}}
+            <form method="POST"
+                  action="{{ route('admin.commandes.destroy', $commande) }}"
+                  id="form-annuler-{{ $commande->id }}"
+                  style="display:none;">
+                @csrf
+                @method('DELETE')
+            </form>
         @endif
     </div>
 
@@ -414,5 +420,82 @@
     </ul>
 </nav>
 @endif
+
+<div class="modal fade" id="modalAnnulation" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content"
+             style="border-radius:20px;border:none;
+                    box-shadow:0 24px 80px rgba(0,0,0,0.2);
+                    font-family:'Plus Jakarta Sans',sans-serif;">
+            <div class="modal-header"
+                 style="background:linear-gradient(135deg,var(--danger),#b91c1c);
+                        border-radius:20px 20px 0 0;border:none;padding:18px 24px;">
+                <h5 class="modal-title"
+                    style="font-weight:800;font-size:1rem;color:white;
+                           display:flex;align-items:center;gap:8px;">
+                    <i class="bi bi-x-circle-fill" style="color:#fca5a5;"></i>
+                    Annuler la commande
+                </h5>
+                <button type="button" class="btn-close"
+                        style="filter:invert(1);" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" style="text-align:center;padding:28px 24px;">
+                <div style="width:64px;height:64px;background:var(--danger-light);
+                            border-radius:16px;display:flex;align-items:center;
+                            justify-content:center;margin:0 auto 16px;
+                            font-size:1.8rem;color:var(--danger);">
+                    <i class="bi bi-receipt-cutoff"></i>
+                </div>
+                <h6 style="font-size:1rem;font-weight:800;color:var(--gray-900);margin-bottom:8px;">
+                    Confirmer l'annulation
+                </h6>
+                <p style="font-size:0.875rem;color:var(--gray-400);margin:0;">
+                    Vous allez annuler la commande<br>
+                    <strong id="refCommandeModal"
+                            style="color:var(--danger);font-size:1rem;"></strong><br>
+                    <span style="font-size:0.78rem;">Cette action est irréversible.</span>
+                </p>
+            </div>
+            <div class="modal-footer"
+                 style="justify-content:center;gap:10px;padding-bottom:20px;border:none;">
+                <button type="button" class="btn-isi-outline" data-bs-dismiss="modal">
+                    <i class="bi bi-arrow-left"></i> Retour
+                </button>
+                <button type="button"
+                        id="btnConfirmerAnnulation"
+                        class="btn-isi-primary"
+                        style="background:linear-gradient(135deg,var(--danger),#b91c1c);
+                               box-shadow:0 4px 14px rgba(220,38,38,0.3);">
+                    <i class="bi bi-x-circle-fill"></i> Confirmer l'annulation
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    let modalAnnulationInstance = null;
+    let formIdAAnnuler = null;
+
+    function ouvrirModalAnnulation(id, ref) {
+        formIdAAnnuler = id;
+        document.getElementById('refCommandeModal').textContent = '#' + ref;
+
+        if (!modalAnnulationInstance) {
+            modalAnnulationInstance = new bootstrap.Modal(
+                document.getElementById('modalAnnulation')
+            );
+        }
+        modalAnnulationInstance.show();
+    }
+
+    document.getElementById('btnConfirmerAnnulation').addEventListener('click', function () {
+        if (formIdAAnnuler) {
+            document.getElementById('form-annuler-' + formIdAAnnuler).submit();
+        }
+    });
+</script>
+@endpush
 
 @endsection

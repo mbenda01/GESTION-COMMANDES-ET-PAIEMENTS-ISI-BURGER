@@ -51,7 +51,6 @@
             50%       { transform: translateY(-10px); }
         }
 
-        /* ── NAVBAR ── */
         .navbar-welcome {
             background: linear-gradient(90deg, var(--blue-900) 0%, #0f1e4a 100%);
             border-bottom: 3px solid var(--yellow);
@@ -109,7 +108,6 @@
             color: var(--blue-900) !important;
         }
 
-        /* ── HERO ── */
         .hero-section {
             background: linear-gradient(160deg, var(--blue-900) 0%, #0f1e4a 55%, var(--blue-800) 100%);
             position: relative;
@@ -293,7 +291,6 @@
             margin-top: 2px;
         }
 
-        /* ── FEATURES ── */
         .features-section {
             background: white;
             padding: 80px 0;
@@ -376,7 +373,6 @@
             margin: 0;
         }
 
-        /* ── CTA ── */
         .cta-section {
             background: linear-gradient(135deg, var(--blue-900) 0%, #0f1e4a 100%);
             padding: 80px 0;
@@ -413,7 +409,6 @@
             line-height: 1.7;
         }
 
-        /* ── FOOTER ── */
         .footer-welcome {
             background: linear-gradient(160deg, var(--blue-900) 0%, #0f1e4a 100%);
             border-top: 3px solid var(--yellow);

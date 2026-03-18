@@ -15,25 +15,10 @@ class CommandeClientController extends Controller
 {
     public function index()
     {
-        $infosClient = session('client_infos');
-
-        if (!$infosClient && !Auth::check()) {
-            return redirect()->route('catalogue.index')
-                ->with('info', 'Veuillez d\'abord passer une commande.');
-        }
-
-        if (Auth::check()) {
-            $commandes = Commande::with(['produits', 'paiement'])
-                ->where('user_id', Auth::id())
-                ->orderBy('created_at', 'desc')
-                ->paginate(6);
-        } else {
-            $ids = session('commandes_ids', []);
-            $commandes = Commande::with(['produits', 'paiement'])
-                ->whereIn('id', $ids)
-                ->orderBy('created_at', 'desc')
-                ->paginate(6);
-        }
+        $commandes = Commande::with(['produits', 'paiement'])
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(6);
 
         return view('client.commandes.index', compact('commandes'));
     }
@@ -41,8 +26,7 @@ class CommandeClientController extends Controller
     public function create()
     {
         $produits = Produit::disponible()->orderBy('nom')->get();
-        $infosClient = session('client_infos');
-        return view('client.commandes.create', compact('produits', 'infosClient'));
+        return view('client.commandes.create', compact('produits'));
     }
 
     public function saveInfos(Request $request)
@@ -63,32 +47,30 @@ class CommandeClientController extends Controller
 
         return response()->json(['success' => true]);
     }
-
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('error', 'Vous devez être connecté pour passer une commande.');
+        }
+
+        $produitsFiltres = collect($request->input('produits', []))
+            ->filter(fn($ligne) => isset($ligne['quantite']) && (int)$ligne['quantite'] > 0)
+            ->values()
+            ->toArray();
+
+        $request->merge(['produits' => $produitsFiltres]);
+
         $request->validate([
             'produits'            => ['required', 'array', 'min:1'],
             'produits.*.id'       => ['required', 'exists:produits,id'],
             'produits.*.quantite' => ['required', 'integer', 'min:1'],
-            'prenom'              => ['required', 'string', 'max:100'],
-            'nom'                 => ['required', 'string', 'max:100'],
-            'email'               => ['required', 'email', 'max:255'],
-            'adresse'             => ['required', 'string', 'max:500'],
         ]);
-
-        session(['client_infos' => [
-            'prenom'  => $request->prenom,
-            'nom'     => $request->nom,
-            'email'   => $request->email,
-            'adresse' => $request->adresse,
-        ]]);
 
         $montantTotal = 0;
         $lignes = [];
 
         foreach ($request->produits as $ligne) {
-            if ((int)$ligne['quantite'] <= 0) continue;
-
             $produit = Produit::findOrFail($ligne['id']);
 
             if (!$produit->estDisponible()) {
@@ -111,16 +93,16 @@ class CommandeClientController extends Controller
             return back()->with('error', 'Veuillez sélectionner au moins un burger.');
         }
 
-        $userId = Auth::check() ? Auth::id() : null;
+        $user = Auth::user();
 
         $commande = Commande::create([
-            'user_id'          => $userId,
-            'nom_client'       => $request->nom,
-            'prenom_client'    => $request->prenom,
-            'email_client'     => $request->email,
-            'adresse_livraison'=> $request->adresse,
-            'statut'           => 'en_attente',
-            'montant_total'    => $montantTotal,
+            'user_id'           => $user->id,
+            'nom_client'        => $user->name,
+            'prenom_client'     => $user->name,
+            'email_client'      => $user->email,
+            'adresse_livraison' => $request->adresse ?? 'Non spécifiée',
+            'statut'            => 'en_attente',
+            'montant_total'     => $montantTotal,
         ]);
 
         foreach ($lignes as $ligne) {
@@ -136,35 +118,30 @@ class CommandeClientController extends Controller
             ]);
         }
 
-        $ids = session('commandes_ids', []);
-        $ids[] = $commande->id;
-        session(['commandes_ids' => $ids]);
-
         try {
-            $commande->notifyClient(new CommandeConfirmeeNotification($commande));
+            $user->notify(new CommandeConfirmeeNotification($commande));
 
             $gestionnaires = User::role('Gestionnaire')->get();
+
+            if ($gestionnaires->isEmpty()) {
+                \Log::warning('Aucun gestionnaire trouvé pour la notification commande #' . $commande->id);
+            }
+
             foreach ($gestionnaires as $gestionnaire) {
                 $gestionnaire->notify(new NouvelleCommandeNotification($commande));
             }
+
         } catch (\Exception $e) {
-            \Log::error('Erreur notification commande : ' . $e->getMessage());
+            \Log::error('Erreur notification commande #' . $commande->id . ' : ' . $e->getMessage());
         }
 
         return redirect()->route('commandes.index')
-            ->with('success', 'Commande passée avec succès ! Un email de confirmation vous a été envoyé.');
+            ->with('success', 'Commande passée avec succès !');
     }
 
     public function show(Commande $commande)
     {
-        $infosClient = session('client_infos');
-        $idsSession  = session('commandes_ids', []);
-
-        $autorise = Auth::check()
-            ? $commande->user_id === Auth::id()
-            : in_array($commande->id, $idsSession);
-
-        if (!$autorise) {
+        if ($commande->user_id !== Auth::id()) {
             abort(403);
         }
 

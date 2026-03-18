@@ -253,27 +253,28 @@
     .btn-unblock-sm { background: var(--success-light); color: var(--success); }
     .btn-unblock-sm:hover { background: var(--success); color: white; }
 
-    .modal-stock .modal-content {
+    .modal-delete .modal-content {
         border-radius: 20px;
         border: none;
         font-family: 'Plus Jakarta Sans', sans-serif;
+        box-shadow: 0 24px 80px rgba(0,0,0,0.2);
     }
-    .modal-stock .modal-header {
-        background: linear-gradient(135deg, var(--blue-900), var(--blue-800));
+    .modal-delete .modal-header {
+        background: linear-gradient(135deg, var(--danger), #b91c1c);
         color: white;
         border-radius: 20px 20px 0 0;
         border: none;
         padding: 18px 24px;
     }
-    .modal-stock .modal-title {
+    .modal-delete .modal-title {
         font-weight: 800;
         font-size: 1rem;
         display: flex;
         align-items: center;
         gap: 8px;
+        color: white;
     }
-    .modal-stock .modal-title i { color: var(--yellow); }
-    .modal-stock .btn-close { filter: invert(1); }
+    .modal-delete .btn-close { filter: invert(1); }
 </style>
 @endpush
 
@@ -290,7 +291,7 @@
         <div class="prod-kpi-icon"><i class="bi bi-box-seam-fill"></i></div>
         <div>
             <span class="prod-kpi-val">{{ $total }}</span>
-            <span class="prod-kpi-lbl">Total burgers</span>
+            <span class="prod-kpi-lbl">Total burgers actifs</span>
         </div>
     </div>
     <div class="prod-kpi kpi-green">
@@ -323,7 +324,7 @@
             <i class="bi bi-box-seam-fill"></i> Gestion des burgers
         </h2>
         <p class="page-subtitle-isi">
-            {{ $produits->total() }} burger(s) — Page {{ $produits->currentPage() }}/{{ $produits->lastPage() }}
+            {{ $produits->total() }} burger(s) actif(s) — Page {{ $produits->currentPage() }}/{{ $produits->lastPage() }}
         </p>
     </div>
     <a href="{{ route('admin.produits.create') }}" class="btn-isi-yellow">
@@ -331,13 +332,22 @@
     </a>
 </div>
 
-{{-- ── GRILLE ── --}}
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+    <h3 style="font-size:1rem;font-weight:800;color:var(--gray-900);
+               display:flex;align-items:center;gap:8px;margin:0;">
+        <i class="bi bi-check-circle-fill" style="color:var(--success);"></i>
+        Burgers actifs
+        <span style="background:var(--success-light);color:var(--success);
+                     font-size:0.72rem;padding:2px 10px;border-radius:999px;font-weight:800;">
+            {{ $produits->total() }}
+        </span>
+    </h3>
+</div>
+
 <div class="row g-4">
-    @php $i = 0; @endphp
     @forelse($produits as $produit)
-    @php $i++; @endphp
     <div class="col-md-4" style="animation-delay: {{ $loop->index * 0.05 }}s">
-        <div class="prod-card {{ $produit->archive ? 'archived' : '' }} {{ $produit->bloque && !$produit->archive ? 'blocked' : '' }}">
+        <div class="prod-card {{ $produit->bloque ? 'blocked' : '' }}">
 
             {{-- Image --}}
             <div class="prod-image-wrap">
@@ -347,29 +357,25 @@
                     loading="lazy">
 
                 <div class="prod-status-badges">
-                    @if($produit->archive)
-                        <span class="prod-badge archive"><i class="bi bi-archive-fill"></i> Archivé</span>
-                    @elseif($produit->bloque)
+                    @if($produit->bloque)
                         <span class="prod-badge bloque"><i class="bi bi-slash-circle-fill"></i> Bloqué</span>
                     @else
                         <span class="prod-badge actif"><i class="bi bi-check-circle-fill"></i> Actif</span>
                     @endif
                 </div>
 
-                @if(!$produit->archive)
-                    @if($produit->stock <= 0)
-                        <span class="stock-badge-img vide">
-                            <i class="bi bi-x-circle-fill me-1"></i> Rupture
-                        </span>
-                    @elseif($produit->stock <= 5)
-                        <span class="stock-badge-img faible">
-                            <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ $produit->stock }} restants
-                        </span>
-                    @else
-                        <span class="stock-badge-img ok">
-                            <i class="bi bi-check-circle-fill me-1"></i> {{ $produit->stock }} en stock
-                        </span>
-                    @endif
+                @if($produit->stock <= 0)
+                    <span class="stock-badge-img vide">
+                        <i class="bi bi-x-circle-fill me-1"></i> Rupture
+                    </span>
+                @elseif($produit->stock <= 5)
+                    <span class="stock-badge-img faible">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> {{ $produit->stock }} restants
+                    </span>
+                @else
+                    <span class="stock-badge-img ok">
+                        <i class="bi bi-check-circle-fill me-1"></i> {{ $produit->stock }} en stock
+                    </span>
                 @endif
 
                 <div class="price-img-overlay">
@@ -383,7 +389,6 @@
                 <p class="prod-desc">{{ $produit->description }}</p>
 
                 {{-- Gestion stock --}}
-                @if(!$produit->archive)
                 <div class="stock-manager">
                     <div class="stock-manager-label">
                         <span><i class="bi bi-layers-fill me-1"></i> Stock</span>
@@ -397,13 +402,8 @@
                           class="stock-form">
                         @csrf
                         @method('PATCH')
-                        <input
-                            type="number"
-                            name="quantite"
-                            class="stock-input"
-                            value="1"
-                            min="0"
-                            required>
+                        <input type="number" name="quantite" class="stock-input"
+                               value="1" min="0" required>
                         <select name="action" class="stock-action-select">
                             <option value="ajouter">+ Ajouter</option>
                             <option value="diminuer">− Diminuer</option>
@@ -414,7 +414,6 @@
                         </button>
                     </form>
                 </div>
-                @endif
             </div>
 
             {{-- Footer actions --}}
@@ -424,34 +423,29 @@
                     <i class="bi bi-pencil-fill"></i> Modifier
                 </a>
 
-                <form method="POST"
-                      action="{{ route('admin.produits.archive', $produit) }}">
+                {{-- Archiver --}}
+                <form method="POST" action="{{ route('admin.produits.archive', $produit) }}">
                     @csrf
                     @method('PATCH')
-                    <button type="submit"
-                            class="btn-action-sm btn-archive-sm"
-                            style="width:100%;">
-                        @if($produit->archive)
-                            <i class="bi bi-arrow-counterclockwise"></i> Désarchiver
-                        @else
-                            <i class="bi bi-archive-fill"></i> Archiver
-                        @endif
+                    <button type="submit" class="btn-action-sm btn-archive-sm" style="width:100%;">
+                        <i class="bi bi-archive-fill"></i> Archiver
                     </button>
                 </form>
 
-                @if(!$produit->archive)
+                {{-- Bloquer / Débloquer --}}
                 <form method="POST"
                       action="{{ route('admin.produits.stock', $produit) }}"
-                      style="flex:1;">
+                      style="flex:1;"
+                      id="form-block-{{ $produit->id }}">
                     @csrf
                     @method('PATCH')
-                    <input type="hidden" name="quantite" value="0">
+                    <input type="hidden" name="quantite" value="0" id="block-qty-{{ $produit->id }}">
                     <input type="hidden" name="action" value="definir">
                     @if($produit->bloque)
-                        <button type="submit"
+                        <button type="button"
                                 class="btn-action-sm btn-unblock-sm"
                                 style="width:100%;"
-                                onclick="this.form.querySelector('[name=quantite]').value=prompt('Nouveau stock ?','10')||0">
+                                onclick="debloquerProduit({{ $produit->id }})">
                             <i class="bi bi-unlock-fill"></i> Débloquer
                         </button>
                     @else
@@ -463,16 +457,21 @@
                         </button>
                     @endif
                 </form>
-                @endif
 
+                <button type="button"
+                        class="btn-action-sm btn-delete-sm"
+                        style="width:100%;"
+                        onclick="ouvrirModalSuppression({{ $produit->id }}, '{{ addslashes($produit->nom) }}')">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+
+                {{-- Formulaire suppression (soumis par le modal) --}}
                 <form method="POST"
                       action="{{ route('admin.produits.destroy', $produit) }}"
-                      onsubmit="return confirm('Supprimer définitivement ce burger ?')">
+                      id="form-delete-{{ $produit->id }}"
+                      style="display:none;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn-action-sm btn-delete-sm" style="width:100%;">
-                        <i class="bi bi-trash-fill"></i>
-                    </button>
                 </form>
             </div>
 
@@ -484,7 +483,7 @@
             <div class="empty-icon-isi">
                 <i class="bi bi-box-seam"></i>
             </div>
-            <h3>Aucun produit trouvé</h3>
+            <h3>Aucun produit actif</h3>
             <p>Commencez par ajouter votre premier burger.</p>
             <a href="{{ route('admin.produits.create') }}" class="btn-isi-yellow">
                 <i class="bi bi-plus-lg"></i> Ajouter un burger
@@ -494,9 +493,9 @@
     @endforelse
 </div>
 
-{{-- ── PAGINATION ── --}}
+{{-- ── PAGINATION actifs ── --}}
 @if($produits->hasPages())
-<nav class="mt-4">
+<nav class="mt-4 mb-5">
     <ul class="pagination-isi">
         <li class="page-item {{ $produits->onFirstPage() ? 'disabled' : '' }}">
             <a class="page-link" href="{{ $produits->previousPageUrl() }}">
@@ -516,5 +515,180 @@
     </ul>
 </nav>
 @endif
+
+@php $archives = \App\Models\Produit::where('archive', true)->orderBy('updated_at','desc')->get(); @endphp
+
+@if($archives->count() > 0)
+<div style="border-top:2px dashed var(--gray-200);padding-top:32px;margin-top:8px;">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h3 style="font-size:1rem;font-weight:800;color:var(--gray-500);
+                   display:flex;align-items:center;gap:8px;margin:0;">
+            <i class="bi bi-archive-fill" style="color:var(--gold);"></i>
+            Produits archivés
+            <span style="background:#fff8e1;color:var(--gold);
+                         font-size:0.72rem;padding:2px 10px;border-radius:999px;font-weight:800;">
+                {{ $archives->count() }}
+            </span>
+        </h3>
+        <small style="color:var(--gray-400);font-size:0.78rem;font-weight:500;">
+            <i class="bi bi-eye-slash me-1"></i> Non visibles par les clients
+        </small>
+    </div>
+
+    <div class="row g-4">
+        @foreach($archives as $produit)
+        <div class="col-md-4">
+            <div class="prod-card archived">
+                <div class="prod-image-wrap">
+                    <img src="{{ $produit->image ?? 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400' }}"
+                         alt="{{ $produit->nom }}" loading="lazy"
+                         style="filter:grayscale(0.5);">
+                    <div class="prod-status-badges">
+                        <span class="prod-badge archive">
+                            <i class="bi bi-archive-fill"></i> Archivé
+                        </span>
+                    </div>
+                    <div class="price-img-overlay">
+                        {{ number_format($produit->prix, 0, ',', ' ') }} FCFA
+                    </div>
+                </div>
+
+                <div class="prod-body">
+                    <h5 class="prod-name" style="color:var(--gray-400);">{{ $produit->nom }}</h5>
+                    <p class="prod-desc">{{ $produit->description }}</p>
+                </div>
+
+                <div class="prod-footer">
+                    {{-- Désarchiver --}}
+                    <form method="POST"
+                          action="{{ route('admin.produits.archive', $produit) }}"
+                          style="flex:2;">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="btn-action-sm btn-unblock-sm" style="width:100%;">
+                            <i class="bi bi-arrow-counterclockwise"></i> Désarchiver
+                        </button>
+                    </form>
+
+                    <button type="button"
+                            class="btn-action-sm btn-delete-sm"
+                            style="flex:1;"
+                            onclick="ouvrirModalSuppression({{ $produit->id }}, '{{ addslashes($produit->nom) }}')">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+
+                    <form method="POST"
+                          action="{{ route('admin.produits.destroy', $produit) }}"
+                          id="form-delete-{{ $produit->id }}"
+                          style="display:none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
+@endif
+
+
+<div class="modal fade modal-delete" id="modalSuppression" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-trash-fill" style="color:#fca5a5;"></i>
+                    Supprimer le burger
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" style="text-align:center;padding:28px 24px;">
+                <div style="width:64px;height:64px;background:var(--danger-light);border-radius:16px;
+                            display:flex;align-items:center;justify-content:center;
+                            margin:0 auto 16px;font-size:1.8rem;color:var(--danger);">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+                <h6 style="font-size:1rem;font-weight:800;color:var(--gray-900);margin-bottom:8px;">
+                    Confirmer la suppression
+                </h6>
+                <p style="font-size:0.875rem;color:var(--gray-400);margin:0;">
+                    Vous allez supprimer définitivement<br>
+                    <strong id="nomProduitModal" style="color:var(--danger);"></strong><br>
+                    <span style="font-size:0.78rem;">Cette action est irréversible.</span>
+                </p>
+            </div>
+            <div class="modal-footer" style="justify-content:center;gap:10px;padding-bottom:20px;border:none;">
+                <button type="button" class="btn-isi-outline" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg"></i> Annuler
+                </button>
+                <button type="button" class="btn-isi-primary"
+                        id="btnConfirmerSuppression"
+                        style="background:linear-gradient(135deg,var(--danger),#b91c1c);
+                               box-shadow:0 4px 14px rgba(220,38,38,0.3);">
+                    <i class="bi bi-trash-fill"></i> Supprimer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    let modalSuppressionInstance = null;
+    let formIdASupprimer = null;
+
+    function ouvrirModalSuppression(id, nom) {
+        document.querySelectorAll('.modal-backdrop').forEach(e => e.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+
+        formIdASupprimer = id;
+        document.getElementById('nomProduitModal').textContent = nom;
+
+        const el = document.getElementById('modalSuppression');
+        document.body.appendChild(el);
+        el.style.zIndex = '99999';
+
+        modalSuppressionInstance = new bootstrap.Modal(el, {
+            backdrop: true,
+            keyboard: true,
+            focus: true
+        });
+
+        modalSuppressionInstance.show();
+
+        setTimeout(() => {
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.style.zIndex = '99998';
+                backdrop.style.opacity = '0.5';
+            }
+        }, 50);
+    }
+    document.getElementById('modalSuppression').addEventListener('hidden.bs.modal', function () {
+        document.querySelectorAll('.modal-backdrop').forEach(e => e.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+    });
+
+    document.getElementById('btnConfirmerSuppression').addEventListener('click', function () {
+        if (formIdASupprimer) {
+            document.getElementById('form-delete-' + formIdASupprimer).submit();
+        }
+    });
+
+    function debloquerProduit(id) {
+        const stock = prompt('Nouveau stock pour ce burger ?', '10');
+        if (stock === null) return;
+        const qty = parseInt(stock) || 0;
+        document.getElementById('block-qty-' + id).value = qty;
+        document.getElementById('form-block-' + id).submit();
+    }
+</script>
+@endpush
 
 @endsection

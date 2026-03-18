@@ -8,7 +8,6 @@ pipeline {
 
     stages {
 
-        // ── 1. Pull du code ──────────────────────────
         stage('Pull du code') {
             steps {
                 echo 'Récupération du code depuis GitHub...'
@@ -16,7 +15,6 @@ pipeline {
             }
         }
 
-        // ── 2. Installation des dépendances ──────────
         stage('Installation Laravel') {
             steps {
                 echo 'Installation des dépendances Composer...'
@@ -33,7 +31,6 @@ pipeline {
             }
         }
 
-        // ── 3. Build Frontend ─────────────────────────
         stage('Build Frontend') {
             steps {
                 echo 'Compilation des assets...'
@@ -41,7 +38,6 @@ pipeline {
             }
         }
 
-        // ── 4. Migration ──────────────────────────────
         stage('Migration Base de données') {
             steps {
                 echo '🗄️ Migration de la base de données...'
@@ -50,7 +46,6 @@ pipeline {
             }
         }
 
-        // ── 5. Build Docker ───────────────────────────
         stage('Build Image Docker') {
             steps {
                 echo 'Construction de l\'image Docker...'
@@ -59,7 +54,6 @@ pipeline {
             }
         }
 
-        // ── 6. Deploy ─────────────────────────────────
         stage('Déploiement') {
             steps {
                 echo 'Déploiement du container...'

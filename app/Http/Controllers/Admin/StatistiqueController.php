@@ -12,7 +12,6 @@ class StatistiqueController extends Controller
 {
     public function index()
     {
-        // ── Cards du jour ──────────────────────────────
         $commandesEnCours = Commande::whereDate('created_at', today())
             ->whereIn('statut', ['en_attente', 'en_preparation', 'prete'])
             ->count();
@@ -24,7 +23,6 @@ class StatistiqueController extends Controller
         $recettesJour = Paiement::whereDate('date_paiement', today())
             ->sum('montant');
 
-        // ── Commandes par mois (12 derniers mois) ──────
         $commandesMois = Commande::selectRaw(
                 "TO_CHAR(created_at, 'YYYY-MM') as mois, COUNT(*) as total"
             )
@@ -33,7 +31,6 @@ class StatistiqueController extends Controller
             ->orderBy('mois')
             ->get();
 
-        // ── Top 5 produits les plus commandés ──────────
         $topProduits = DB::table('commande_produit')
             ->join('produits', 'produits.id', '=', 'commande_produit.produit_id')
             ->select(

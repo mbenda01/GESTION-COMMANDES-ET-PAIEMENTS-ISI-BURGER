@@ -113,7 +113,6 @@
         margin-top: 2px;
     }
 
-    /* ── CONTENT ── */
     .detail-right {
         display: flex;
         flex-direction: column;

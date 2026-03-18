@@ -20,12 +20,16 @@ class NouvelleCommandeNotification extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
+        $nomClient = $this->commande->user
+            ? $this->commande->user->name
+            : trim($this->commande->prenom_client . ' ' . $this->commande->nom_client);
+
         return (new MailMessage)
             ->subject('🍔 Nouvelle commande #' . $this->commande->id)
             ->greeting('Bonjour ' . $notifiable->name . ' !')
             ->line('Une nouvelle commande vient d\'être passée.')
             ->line('**Numéro de commande :** #' . $this->commande->id)
-            ->line('**Client :** ' . $this->commande->user->name)
+            ->line('**Client :** ' . $nomClient)
             ->line('**Montant total :** ' . number_format($this->commande->montant_total, 0, ',', ' ') . ' FCFA')
             ->line('**Nombre de burgers :** ' . $this->commande->produits->count())
             ->action('Voir la commande', url('/admin/commandes/' . $this->commande->id))
