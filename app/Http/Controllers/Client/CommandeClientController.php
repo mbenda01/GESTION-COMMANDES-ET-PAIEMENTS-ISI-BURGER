@@ -104,6 +104,10 @@ class CommandeClientController extends Controller
             'statut'            => 'en_attente',
             'montant_total'     => $montantTotal,
         ]);
+        \App\Models\CommandeStatut::create([
+            'commande_id' => $commande->id,
+            'statut'      => 'en_attente',
+        ]);
 
         foreach ($lignes as $ligne) {
             $commande->produits()->attach($ligne['produit']->id, [
@@ -145,7 +149,7 @@ class CommandeClientController extends Controller
             abort(403);
         }
 
-        $commande->load(['produits', 'paiement']);
+        $commande->load(['produits', 'paiement', 'historique']);
         return view('client.commandes.show', compact('commande'));
     }
 }

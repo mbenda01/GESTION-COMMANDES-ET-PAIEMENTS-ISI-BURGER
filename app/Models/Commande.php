@@ -82,4 +82,8 @@ class Commande extends Model
     {
         return $this->statut === 'prete' && !$this->paiement;
     }
+    public function historique()
+    {
+        return $this->hasMany(CommandeStatut::class)->orderBy('created_at', 'asc');
+    }
 }

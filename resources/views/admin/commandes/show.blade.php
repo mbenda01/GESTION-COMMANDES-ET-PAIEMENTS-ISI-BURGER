@@ -32,7 +32,6 @@
         flex-wrap: wrap;
         gap: 16px;
     }
-
     .statut-hero-pill {
         display: inline-flex;
         align-items: center;
@@ -47,14 +46,12 @@
     .sph-prete          { background: rgba(22,163,74,0.2);  color: #86efac; border: 1px solid rgba(22,163,74,0.3); }
     .sph-payee          { background: rgba(46,125,50,0.2);  color: #a7f3d0; border: 1px solid rgba(46,125,50,0.3); }
     .sph-annulee        { background: rgba(220,38,38,0.2);  color: #fca5a5; border: 1px solid rgba(220,38,38,0.3); }
-
     .admin-cmd-grid {
         display: grid;
         grid-template-columns: 1fr 340px;
         gap: 24px;
         align-items: start;
     }
-
     .info-card {
         background: white;
         border-radius: 18px;
@@ -81,7 +78,6 @@
     }
     .info-card-header h5 i { color: var(--yellow); }
     .info-card-body { padding: 20px 22px; }
-
     .table-admin {
         width: 100%;
         border-collapse: collapse;
@@ -118,7 +114,6 @@
         font-weight: 800;
         color: white;
     }
-
     .burger-img-sm {
         width: 38px;
         height: 38px;
@@ -126,7 +121,6 @@
         object-fit: cover;
         flex-shrink: 0;
     }
-
     .info-row {
         display: flex;
         justify-content: space-between;
@@ -146,7 +140,6 @@
     }
     .info-row-label i { color: var(--blue); }
     .info-row-value { font-weight: 700; color: var(--gray-900); text-align: right; }
-
     .statut-form-select {
         width: 100%;
         padding: 11px 14px;
@@ -166,7 +159,6 @@
         border-color: var(--blue);
         box-shadow: 0 0 0 3px rgba(13,110,253,0.1);
     }
-
     .paiement-card {
         background: linear-gradient(135deg, var(--blue-900), var(--blue-800));
         border-radius: 18px;
@@ -186,7 +178,6 @@
         gap: 6px;
     }
     .paiement-card-title i { color: var(--yellow); }
-
     .montant-input {
         width: 100%;
         padding: 12px 14px;
@@ -206,7 +197,6 @@
         border-color: var(--yellow);
         box-shadow: 0 0 0 3px rgba(255,193,7,0.2);
     }
-
     .btn-payer {
         width: 100%;
         padding: 13px;
@@ -229,7 +219,6 @@
         transform: translateY(-2px);
         box-shadow: 0 8px 22px rgba(255,193,7,0.5);
     }
-
     .paye-info-row {
         display: flex;
         justify-content: space-between;
@@ -241,13 +230,47 @@
     .paye-label { font-size: 0.78rem; color: rgba(255,255,255,0.55); font-weight: 500; }
     .paye-value { font-size: 0.88rem; font-weight: 700; color: white; }
     .paye-total { color: var(--yellow); font-size: 1.1rem; font-weight: 800; }
-
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding-bottom: 16px;
+        position: relative;
+    }
+    .timeline-step:last-child { padding-bottom: 0; }
+    .timeline-step::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 30px;
+        bottom: 0;
+        width: 2px;
+        background: var(--gray-100);
+    }
+    .timeline-step:last-child::before { display: none; }
+    .timeline-dot {
+        width: 30px; height: 30px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+        position: relative; z-index: 1;
+    }
+    .timeline-dot.done    { background: var(--success-light); color: var(--success); }
+    .timeline-dot.active  { background: linear-gradient(135deg, var(--yellow), var(--gold)); color: var(--blue-900); }
+    .timeline-dot.pending { background: var(--gray-100); color: var(--gray-400); }
+    .timeline-label { font-size: 0.82rem; font-weight: 700; color: var(--gray-700); display: block; padding-top: 4px; }
+    .timeline-label.done   { color: var(--success); }
+    .timeline-label.active { color: var(--gold); }
+    .timeline-label.pending{ color: var(--gray-400); }
     @media (max-width: 992px) {
         .admin-cmd-grid { grid-template-columns: 1fr; }
     }
 </style>
 @endpush
 
+{{-- ── HERO ── --}}
 <div class="admin-cmd-hero">
     <div class="hero-content">
         <div>
@@ -279,6 +302,7 @@
 
 <div class="admin-cmd-grid">
 
+    {{-- ── COLONNE GAUCHE ── --}}
     <div>
 
         {{-- Produits --}}
@@ -300,13 +324,9 @@
                     <tr>
                         <td>
                             <div class="d-flex align-items-center gap-2">
-                                <img
-                                    src="{{ $produit->image ?? 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100' }}"
-                                    alt="{{ $produit->nom }}"
-                                    class="burger-img-sm">
-                                <span style="font-weight:800;color:var(--blue-900);">
-                                    {{ $produit->nom }}
-                                </span>
+                                <img src="{{ $produit->image ?? 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100' }}"
+                                     alt="{{ $produit->nom }}" class="burger-img-sm">
+                                <span style="font-weight:800;color:var(--blue-900);">{{ $produit->nom }}</span>
                             </div>
                         </td>
                         <td style="color:var(--gray-600);font-weight:600;">
@@ -361,6 +381,7 @@
 
     </div>
 
+    {{-- ── COLONNE DROITE ── --}}
     <div>
 
         {{-- Changer statut --}}
@@ -370,8 +391,7 @@
                 <h5><i class="bi bi-arrow-repeat"></i> Changer le statut</h5>
             </div>
             <div class="info-card-body">
-                <form method="POST"
-                      action="{{ route('admin.commandes.updateStatut', $commande) }}">
+                <form method="POST" action="{{ route('admin.commandes.updateStatut', $commande) }}">
                     @csrf
                     @method('PATCH')
                     <select name="statut" class="statut-form-select">
@@ -407,12 +427,79 @@
         </div>
         @endif
 
+        {{-- ── TIMELINE HISTORIQUE ── --}}
+        <div class="info-card" style="margin-bottom:20px;">
+            <div class="info-card-header">
+                <h5><i class="bi bi-clock-history"></i> Historique des statuts</h5>
+            </div>
+            <div class="info-card-body">
+                @php
+                    $statuts = ['en_attente', 'en_preparation', 'prete', 'payee'];
+                    $labels  = [
+                        'en_attente'     => 'En attente',
+                        'en_preparation' => 'En préparation',
+                        'prete'          => 'Prête',
+                        'payee'          => 'Payée',
+                    ];
+                    $icons = [
+                        'en_attente'     => 'bi-clock-fill',
+                        'en_preparation' => 'bi-fire',
+                        'prete'          => 'bi-check-circle-fill',
+                        'payee'          => 'bi-patch-check-fill',
+                    ];
+                    $indexActuel = array_search($commande->statut, $statuts);
+                    $historiqueParStatut = $commande->historique->keyBy('statut');
+                @endphp
+
+                <div class="timeline">
+                    @if($commande->statut === 'annulee')
+                        <div class="timeline-step">
+                            <div class="timeline-dot" style="background:var(--danger-light);color:var(--danger);">
+                                <i class="bi bi-x-circle-fill"></i>
+                            </div>
+                            <div>
+                                <span class="timeline-label" style="color:var(--danger);">Annulée</span>
+                                @if($historiqueParStatut->has('annulee'))
+                                    <span style="font-size:0.72rem;color:var(--gray-400);display:block;margin-top:2px;">
+                                        <i class="bi bi-calendar3 me-1"></i>
+                                        {{ $historiqueParStatut['annulee']->created_at->format('d/m/Y à H:i:s') }}
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                    @else
+                        @foreach($statuts as $idx => $key)
+                            @php
+                                $isDone   = $indexActuel !== false && $idx < $indexActuel;
+                                $isActive = $commande->statut === $key;
+                                $state    = $isDone ? 'done' : ($isActive ? 'active' : 'pending');
+                            @endphp
+                            <div class="timeline-step">
+                                <div class="timeline-dot {{ $state }}">
+                                    <i class="bi {{ $icons[$key] }}"></i>
+                                </div>
+                                <div>
+                                    <span class="timeline-label {{ $state }}">{{ $labels[$key] }}</span>
+                                    @if(($isDone || $isActive) && $historiqueParStatut->has($key))
+                                        <span style="font-size:0.72rem;color:var(--gray-400);display:block;margin-top:2px;">
+                                            <i class="bi bi-calendar3 me-1"></i>
+                                            {{ $historiqueParStatut[$key]->created_at->format('d/m/Y à H:i:s') }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+
+            </div>
+        </div>
+
         {{-- Paiement --}}
         <div class="paiement-card">
             <div class="paiement-card-title">
                 <i class="bi bi-cash-coin"></i> Paiement
             </div>
-
             @if($commande->paiement)
                 <div class="paye-info-row">
                     <span class="paye-label">Montant payé</span>
@@ -430,30 +517,23 @@
                         {{ $commande->paiement->date_paiement->format('d/m/Y à H:i') }}
                     </span>
                 </div>
-
             @elseif($commande->estPayable())
-                <form method="POST"
-                      action="{{ route('admin.commandes.paiement', $commande) }}">
+                <form method="POST" action="{{ route('admin.commandes.paiement', $commande) }}">
                     @csrf
                     <input type="hidden" name="mode" value="especes">
                     <div style="font-size:0.78rem;color:rgba(255,255,255,0.55);margin-bottom:8px;font-weight:600;">
                         Montant reçu (FCFA)
                     </div>
-                    <input
-                        type="number"
-                        name="montant"
-                        value="{{ $commande->montant_total }}"
-                        class="montant-input"
-                        min="0"
-                        required>
+                    <input type="number" name="montant" value="{{ $commande->montant_total }}"
+                           class="montant-input" min="0" required>
                     <button type="submit" class="btn-payer">
                         <i class="bi bi-cash-coin"></i> Enregistrer le paiement
                     </button>
                 </form>
-
             @else
                 <p style="color:rgba(255,255,255,0.45);font-size:0.82rem;margin:0;">
-                    Le paiement sera disponible quand la commande est <strong style="color:rgba(255,255,255,0.7);">Prête</strong>.
+                    Le paiement sera disponible quand la commande est
+                    <strong style="color:rgba(255,255,255,0.7);">Prête</strong>.
                 </p>
             @endif
         </div>

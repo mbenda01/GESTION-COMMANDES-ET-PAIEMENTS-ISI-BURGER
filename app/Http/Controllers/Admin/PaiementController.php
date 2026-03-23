@@ -25,6 +25,11 @@ class PaiementController extends Controller
 
         $commande->update(['statut' => 'payee']);
 
+        \App\Models\CommandeStatut::create([
+            'commande_id' => $commande->id,
+            'statut'      => 'payee',
+        ]);
+
         return redirect()->route('admin.commandes.show', $commande)
             ->with('success', 'Paiement enregistré avec succès.');
     }

@@ -522,36 +522,68 @@
                         @break
                 @endswitch
 
-                {{-- Timeline --}}
+                {{-- ── TIMELINE ── --}}
+                @php
+                    $statuts = ['en_attente', 'en_preparation', 'prete', 'payee'];
+                    $labels  = [
+                        'en_attente'     => 'En attente',
+                        'en_preparation' => 'En préparation',
+                        'prete'          => 'Prête',
+                        'payee'          => 'Payée',
+                    ];
+                    $icons = [
+                        'en_attente'     => 'bi-clock-fill',
+                        'en_preparation' => 'bi-fire',
+                        'prete'          => 'bi-check-circle-fill',
+                        'payee'          => 'bi-patch-check-fill',
+                    ];
+                    $indexActuel = array_search($commande->statut, $statuts);
+
+                    // Historique indexé par statut pour récupérer la date
+                    $historiqueParStatut = $commande->historique->keyBy('statut');
+                @endphp
+
                 <div class="timeline">
-                    @php
-                        $statuts = ['en_attente','en_preparation','prete','payee'];
-                        $indexActuel = array_search($commande->statut, $statuts);
-                    @endphp
-
-                    @foreach([
-                        'en_attente'     => ['label' => 'En attente',      'icon' => 'bi-clock-fill'],
-                        'en_preparation' => ['label' => 'En préparation',  'icon' => 'bi-fire'],
-                        'prete'          => ['label' => 'Prête',           'icon' => 'bi-check-circle-fill'],
-                        'payee'          => ['label' => 'Payée',           'icon' => 'bi-patch-check-fill'],
-                    ] as $key => $step)
-                        @php
-                            $idx = array_search($key, $statuts);
-                            $state = ($indexActuel !== false && $idx < $indexActuel) ? 'done'
-                                   : (($commande->statut === $key) ? 'active' : 'pending');
-                            if($commande->statut === 'annulee') $state = 'pending';
-                        @endphp
+                    @if($commande->statut === 'annulee')
                         <div class="timeline-step">
-                            <div class="timeline-dot {{ $state }}">
-                                <i class="bi {{ $step['icon'] }}"></i>
+                            <div class="timeline-dot" style="background:var(--danger-light);color:var(--danger);">
+                                <i class="bi bi-x-circle-fill"></i>
                             </div>
-                            <span class="timeline-label {{ $state }}">{{ $step['label'] }}</span>
+                            <div>
+                                <span class="timeline-label" style="color:var(--danger);">Annulée</span>
+                                @if($historiqueParStatut->has('annulee'))
+                                    <span style="font-size:0.72rem;color:var(--gray-400);display:block;margin-top:2px;">
+                                        <i class="bi bi-calendar3 me-1"></i>
+                                        {{ $historiqueParStatut['annulee']->created_at->format('d/m/Y à H:i:s') }}
+                                    </span>
+                                @endif
+                            </div>
                         </div>
-                    @endforeach
+                    @else
+                        @foreach($statuts as $idx => $key)
+                            @php
+                                $isDone   = $indexActuel !== false && $idx < $indexActuel;
+                                $isActive = $commande->statut === $key;
+                                $isPending = !$isDone && !$isActive;
+                                $state = $isDone ? 'done' : ($isActive ? 'active' : 'pending');
+                            @endphp
+                            <div class="timeline-step">
+                                <div class="timeline-dot {{ $state }}">
+                                    <i class="bi {{ $icons[$key] }}"></i>
+                                </div>
+                                <div>
+                                    <span class="timeline-label {{ $state }}">{{ $labels[$key] }}</span>
+                                    @if(($isDone || $isActive) && $historiqueParStatut->has($key))
+                                        <span style="font-size:0.72rem;color:var(--gray-400);display:block;margin-top:2px;">
+                                            <i class="bi bi-calendar3 me-1"></i>
+                                            {{ $historiqueParStatut[$key]->created_at->format('d/m/Y à H:i:s') }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
-
-            </div>
-        </div>
 
         {{-- Récapitulatif montant --}}
         <div class="detail-block">

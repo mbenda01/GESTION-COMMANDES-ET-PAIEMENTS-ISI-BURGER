@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PaiementController;
 use App\Http\Controllers\Admin\StatistiqueController;
 use App\Http\Controllers\Client\CatalogueController;
 use App\Http\Controllers\Client\CommandeClientController;
+use App\Http\Controllers\SuperAdmin\UserController as SuperAdminUserController;
 
 Route::get('/', fn() => redirect()->route('catalogue.index'));
 
@@ -32,7 +33,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/mes-commandes/{commande}', [CommandeClientController::class, 'show'])
         ->name('commandes.show');
-
 });
 
 Route::middleware(['auth', 'role:Gestionnaire'])
@@ -84,6 +84,30 @@ Route::middleware(['auth', 'role:Gestionnaire'])
 
         Route::post('/commandes/{commande}/paiement', [PaiementController::class, 'store'])
             ->name('commandes.paiement');
+    });
+
+Route::middleware(['auth', 'role:Administrateur'])
+    ->prefix('superadmin')
+    ->name('superadmin.')
+    ->group(function () {
+
+        Route::get('/users', [SuperAdminUserController::class, 'index'])
+            ->name('users.index');
+
+        Route::get('/users/create', [SuperAdminUserController::class, 'create'])
+            ->name('users.create');
+
+        Route::post('/users', [SuperAdminUserController::class, 'store'])
+            ->name('users.store');
+
+        Route::get('/users/{user}/edit', [SuperAdminUserController::class, 'edit'])
+            ->name('users.edit');
+
+        Route::put('/users/{user}', [SuperAdminUserController::class, 'update'])
+            ->name('users.update');
+
+        Route::delete('/users/{user}', [SuperAdminUserController::class, 'destroy'])
+            ->name('users.destroy');
     });
 
 require __DIR__.'/auth.php';

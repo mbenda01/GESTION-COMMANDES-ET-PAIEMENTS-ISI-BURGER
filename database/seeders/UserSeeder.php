@@ -29,5 +29,15 @@ class UserSeeder extends Seeder
             ]
         );
         $client->assignRole('Client');
-    }
+
+        $administrateur = User::firstOrCreate(
+            ['email' => 'administrateur@isiburger.com'],
+            [
+                'name'     => 'Administrateur',
+                'password' => Hash::make('password'),
+                'role'     => 'Administrateur',
+            ]
+        );
+        $administrateur->assignRole('Administrateur');
+            }
 }
